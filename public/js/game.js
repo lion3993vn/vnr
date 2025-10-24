@@ -289,23 +289,41 @@ function showPauseOverlay() {
     const homeBtn = document.getElementById('homeBtn');
     const continueBtn = document.getElementById('continueBtn');
 
-    overlayTitle.innerHTML = '⏸️';
+    overlayTitle.innerHTML = '<span class="text-6xl">⏸️</span>';
     overlayMessage.innerHTML = `
-        <div style="padding: 20px;">
-            <h2 style="color: #ffd700; font-size: 32px; font-weight: 700; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-family: 'Times New Roman', Times, serif; letter-spacing: 1px;">
-                Tạm dừng
-            </h2>
-            <p style="color: #e6d5b8; font-size: 20px; margin-bottom: 25px; font-family: 'Times New Roman', Times, serif;">
-                Trò chơi đang tạm dừng
-            </p>
-            <div style="background: linear-gradient(135deg, rgba(139, 69, 19, 0.6), rgba(101, 67, 33, 0.5)); padding: 20px; border-radius: 12px; border: 3px solid #d4af37; margin-top: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);">
-                <h4 style="color: #ffd700; font-size: 18px; margin-bottom: 10px; font-family: 'Times New Roman', Times, serif; border-bottom: 2px solid #d4af37; padding-bottom: 5px;">💡 Hướng dẫn chiến đấu:</h4>
-                <p style="color: #e6d5b8; font-size: 16px; line-height: 1.6; text-align: left; margin: 0; font-family: 'Times New Roman', Times, serif;">
-                    • Di chuyển chuột để nhắm mục tiêu<br>
-                    • Click chuột trái để bắn<br>
-                    • Nhấn SPACE để tạm dừng<br>
-                    • Ưu tiên bắn máy bay B-52 để ghi điểm cao
+        <div class="space-y-6 py-4">
+            <div class="text-center space-y-2">
+                <h2 class="text-4xl font-bold text-yellow-400 tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                    Tạm dừng
+                </h2>
+                <p class="text-amber-200/90 text-lg">
+                    Trò chơi đang tạm dừng
                 </p>
+            </div>
+            
+            <div class="bg-gradient-to-br from-amber-900/60 to-amber-950/50 rounded-xl border-3 border-yellow-600/60 p-6 shadow-xl backdrop-blur-sm">
+                <h4 class="text-yellow-400 text-lg font-semibold mb-4 pb-2 border-b-2 border-yellow-600/50 flex items-center gap-2">
+                    <span class="text-xl">💡</span>
+                    <span>Hướng dẫn chiến đấu</span>
+                </h4>
+                <div class="text-amber-100/90 text-base space-y-2 text-left">
+                    <div class="flex items-start gap-3 hover:text-yellow-300 transition-colors">
+                        <span class="text-yellow-400 mt-0.5">⬅️➡️</span>
+                        <span>A/D hoặc ← → để di chuyển pháo</span>
+                    </div>
+                    <div class="flex items-start gap-3 hover:text-yellow-300 transition-colors">
+                        <span class="text-yellow-400 mt-0.5">🖱️</span>
+                        <span>Di chuyển chuột để nhắm mục tiêu</span>
+                    </div>
+                    <div class="flex items-start gap-3 hover:text-yellow-300 transition-colors">
+                        <span class="text-yellow-400 mt-0.5">🎯</span>
+                        <span>Click chuột trái hoặc SPACE để bắn</span>
+                    </div>
+                    <div class="flex items-start gap-3 hover:text-yellow-300 transition-colors">
+                        <span class="text-yellow-400 mt-0.5">⏸️</span>
+                        <span>Nhấn ESC để tạm dừng</span>
+                    </div>
+                </div>
             </div>
         </div>
     `;

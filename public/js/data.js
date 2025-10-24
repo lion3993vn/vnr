@@ -151,7 +151,7 @@ const historicalData = [
     significance: "Âm mưu “đánh nhanh thắng nhanh” phá sản.",
     gameObjective: "Đợt cuối: chặn 1 chuyến C-47/AAC.1 rải hàng rồi rút an toàn",
     difficulty: 12,
-    target: 20,
+    target: 2,
     historicalQuote: "Giữ được chủ lực qua mùa đông là thắng lợi.",
     keyFigures: ["Bộ Tổng chỉ huy Việt Minh"],
     strategicImportance: "Ấn định cục diện có lợi cho ta"
@@ -221,15 +221,15 @@ const gameAudio = {
 
 // Volume settings for each sound (0.0 = silent, 1.0 = full volume)
 const gameAudioVolumes = {
-    background: 0.3,
-    shoot: 0.2,        // Gunshot volume - change this to your preference
-    explosion: 0.1,
+    background: 0.1,
+    shoot: 0.05,        // Gunshot volume - change this to your preference
+    explosion: 0.2,
     powerUp: 0.4,
-    victory: 0.6,
-    levelComplete: 0.5,
+    victory: 0.4,
+    levelComplete: 0.3,
     bulletHit: 0.3,    // Bullet hit sound volume
-    bombFall: 0.1,     // Bomb falling sound volume
-    planeExplosion: 0.2 // Plane explosion sound volume
+    bombFall: 0.06,     // Bomb falling sound volume
+    planeExplosion: 0.1 // Plane explosion sound volume
 };
 
 // Sound settings

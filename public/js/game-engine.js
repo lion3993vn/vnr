@@ -68,13 +68,13 @@ class GameEngine {
     }
 
     setupResponsiveCanvas() {
-        // Get the container dimensions
-        const container = this.canvas.parentElement;
-        const containerRect = container.getBoundingClientRect();
-
-        // Calculate available space (accounting for header and padding)
-        const availableWidth = window.innerWidth;
-        const availableHeight = window.innerHeight - 80; // Account for header
+        // Calculate available space (accounting for header, footer and padding)
+        const headerHeight = 60; // Header height with new compact design
+        const footerHeight = 36; // Footer controls height
+        const padding = 20; // Additional padding
+        
+        const availableWidth = window.innerWidth - padding;
+        const availableHeight = window.innerHeight - headerHeight - footerHeight - padding;
 
         // Calculate aspect ratio
         const gameAspectRatio = this.baseWidth / this.baseHeight;
@@ -84,11 +84,11 @@ class GameEngine {
 
         if (screenAspectRatio > gameAspectRatio) {
             // Screen is wider than game - fit to height
-            canvasHeight = Math.min(availableHeight * 0.9, this.baseHeight);
+            canvasHeight = Math.min(availableHeight, this.baseHeight);
             canvasWidth = canvasHeight * gameAspectRatio;
         } else {
             // Screen is taller than game - fit to width
-            canvasWidth = Math.min(availableWidth * 0.95, this.baseWidth);
+            canvasWidth = Math.min(availableWidth, this.baseWidth);
             canvasHeight = canvasWidth / gameAspectRatio;
         }
 
@@ -96,13 +96,16 @@ class GameEngine {
         canvasWidth = Math.max(320, canvasWidth);
         canvasHeight = Math.max(180, canvasHeight);
 
-        // Set canvas dimensions
+        // Set canvas internal resolution (for drawing)
         this.canvas.width = this.baseWidth;
         this.canvas.height = this.baseHeight;
 
-        // Set CSS dimensions for scaling
+        // Set CSS dimensions for display (responsive scaling)
         this.canvas.style.width = canvasWidth + 'px';
         this.canvas.style.height = canvasHeight + 'px';
+        this.canvas.style.maxWidth = '100%';
+        this.canvas.style.height = 'auto';
+        this.canvas.style.display = 'block';
 
         // Calculate scaling factors for mouse input
         this.scaleX = this.baseWidth / canvasWidth;
@@ -111,6 +114,12 @@ class GameEngine {
         // Update dimensions
         this.width = this.baseWidth;
         this.height = this.baseHeight;
+        
+        console.log('Canvas responsive setup:', {
+            available: { width: availableWidth, height: availableHeight },
+            canvas: { width: canvasWidth, height: canvasHeight },
+            scale: { x: this.scaleX, y: this.scaleY }
+        });
     }
 
     handleResize() {
@@ -163,7 +172,7 @@ class GameEngine {
     }
 
     setupPlayer() {
-        // Pháo cố định ở giữa màn hình dưới
+        // Pháo có thể di chuyển ở giữa màn hình dưới
         this.player = {
             x: this.width / 2 - 45,
             y: this.height - 120,
@@ -174,7 +183,11 @@ class GameEngine {
             maxHealth: 100,
             lastShot: 0,
             fireRate: 300,
-            barrelLength: 60
+            barrelLength: 60,
+            // Thêm thuộc tính di chuyển
+            speed: 3,           // Tốc độ di chuyển
+            moveLeft: false,    // Đang di chuyển sang trái
+            moveRight: false    // Đang di chuyển sang phải
         };
     }
 
@@ -241,13 +254,38 @@ class GameEngine {
             this.player.angle = angle;
         });
 
-        // Keyboard events
+        // Keyboard events - Bắn và Di chuyển
         document.addEventListener('keydown', (e) => {
             if (e.code === 'Space') {
                 e.preventDefault();
                 if (!this.isPaused && this.isRunning) {
                     this.shoot();
                 }
+            }
+            
+            // Di chuyển sang trái: A hoặc ArrowLeft
+            if (e.code === 'KeyA' || e.code === 'ArrowLeft') {
+                e.preventDefault();
+                this.player.moveLeft = true;
+            }
+            
+            // Di chuyển sang phải: D hoặc ArrowRight
+            if (e.code === 'KeyD' || e.code === 'ArrowRight') {
+                e.preventDefault();
+                this.player.moveRight = true;
+            }
+        });
+
+        // Keyboard release events - Dừng di chuyển
+        document.addEventListener('keyup', (e) => {
+            // Dừng di chuyển trái
+            if (e.code === 'KeyA' || e.code === 'ArrowLeft') {
+                this.player.moveLeft = false;
+            }
+            
+            // Dừng di chuyển phải
+            if (e.code === 'KeyD' || e.code === 'ArrowRight') {
+                this.player.moveRight = false;
             }
         });
 
@@ -294,9 +332,12 @@ class GameEngine {
 
         // Reset player
         if (this.player) {
-            this.player.x = this.width / 2;
-            this.player.y = this.height - 100;
+            this.player.x = this.width / 2 - 45;
+            this.player.y = this.height - 120;
             this.player.health = this.player.maxHealth;
+            // Reset trạng thái di chuyển
+            this.player.moveLeft = false;
+            this.player.moveRight = false;
         }
 
         console.log('Game reset for level', this.currentLevel);
@@ -453,6 +494,9 @@ class GameEngine {
 
         this.levelTimer += deltaTime;
 
+        // Cập nhật vị trí player (di chuyển)
+        this.updatePlayer(deltaTime);
+
         // Spawn enemies
         this.updateEnemySpawning(deltaTime);
 
@@ -469,6 +513,29 @@ class GameEngine {
 
         // Check win/lose conditions
         this.checkGameState();
+    }
+
+    updatePlayer(deltaTime) {
+        // Xử lý di chuyển của player (khẩu pháo)
+        if (this.player.moveLeft) {
+            // Di chuyển sang trái
+            this.player.x -= this.player.speed;
+            
+            // Giới hạn không cho đi ra ngoài màn hình bên trái
+            if (this.player.x < 0) {
+                this.player.x = 0;
+            }
+        }
+        
+        if (this.player.moveRight) {
+            // Di chuyển sang phải
+            this.player.x += this.player.speed;
+            
+            // Giới hạn không cho đi ra ngoài màn hình bên phải
+            if (this.player.x + this.player.width > this.width) {
+                this.player.x = this.width - this.player.width;
+            }
+        }
     }
 
     updateEnemySpawning(deltaTime) {
@@ -937,7 +1004,7 @@ class GameEngine {
                         this.createExplosion(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2);
 
                         // C-47 activates power-ups immediately when destroyed
-                        if (enemy.type === 'C47_transport') {
+                        if (enemy.type === 'C47_Skytrain' || enemy.type === 'AAC1_Toucan') {
                             this.activateRandomPowerUp();
                         }
 
@@ -1061,9 +1128,12 @@ class GameEngine {
 
     showLevelComplete() {
         const overlay = document.getElementById('gameOverlay');
+        const overlayContent = document.getElementById('overlayContent');
         const title = document.getElementById('overlayTitle');
         const message = document.getElementById('overlayMessage');
         const restartBtn = document.getElementById('restartBtn');
+        const continueBtn = document.getElementById('continueBtn');
+        const homeBtn = document.getElementById('homeBtn');
 
         // Get historical data for this level
         const levelData = historicalData.find(data => data.id === this.currentLevel);
@@ -1073,75 +1143,73 @@ class GameEngine {
             title.textContent = '🎉 Hoàn thành màn chơi!';
             message.innerHTML = `<p>Chúc mừng! Bạn đã hoàn thành ngày ${this.currentLevel}</p>`;
         } else {
-            // Display historical content with refined design
+            // Display historical content with Tailwind CSS
             title.innerHTML = `
-                <div style="position: relative; padding: 15px 0;">
-                    <div style="display: inline-block; background: linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(101, 67, 33, 0.9)); border: 4px solid #d4af37; padding: 12px 30px; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.8), inset 0 2px 0 rgba(255,255,255,0.1);">
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <div style="background: linear-gradient(135deg, #8b4513, #654321); color: #ffd700; border: 3px solid #d4af37; border-radius: 8px; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: bold; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);">
-                                ${this.currentLevel}
-                            </div>
-                            <div style="text-align: left;">
-                                <h2 style="color: #ffd700; margin: 0; font-size: 24px; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif; letter-spacing: 0.5px;">
-                                    ${levelData.title}
-                                </h2>
-                                <p style="color: #d4af37; margin: 4px 0 0 0; font-size: 16px; font-weight: 500; font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif;">
-                                    ${levelData.date}
-                                </p>
-                            </div>
-                        </div>
+                <div class="flex items-center justify-center gap-4 mb-3">
+                    <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 border-3 border-yellow-400 rounded-xl w-16 h-16 flex items-center justify-center text-3xl font-bold text-white shadow-2xl">
+                        ${this.currentLevel}
+                    </div>
+                    <div class="text-left">
+                        <h2 class="text-2xl md:text-3xl font-bold text-yellow-400 mb-1 leading-tight tracking-wide">
+                            ${levelData.title}
+                        </h2>
+                        <p class="text-base text-yellow-500/90 font-medium">
+                            ${levelData.date}
+                        </p>
                     </div>
                 </div>
             `;
 
             message.innerHTML = `
-                <div class="historical-completion" style="max-width: 900px; margin: 0 auto;">
+                <div class="space-y-3 max-w-full">
                     
                     <!-- Mission Complete Banner -->
-                    <div style="background: linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(101, 67, 33, 0.9)); padding: 20px; border-radius: 12px; border: 3px solid #d4af37; box-shadow: 0 8px 25px rgba(0,0,0,0.8), inset 0 2px 0 rgba(255,255,255,0.1); margin-bottom: 20px; text-align: center;">
-                        <h3 style="color: #ffd700; font-size: 26px; font-weight: 700; margin: 0 0 10px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif; text-transform: uppercase; letter-spacing: 2px;">
+                    <div class="bg-gradient-to-br from-amber-800/95 to-amber-900/90 p-4 rounded-xl border-3 border-yellow-500 shadow-2xl text-center">
+                        <h3 class="text-xl md:text-2xl font-bold text-yellow-400 mb-2 uppercase tracking-wider flex items-center justify-center gap-2">
                             ⭐ NHIỆM VỤ HOÀN THÀNH ⭐
                         </h3>
-                        <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px;">
-                            <div style="flex: 1; height: 2px; background: linear-gradient(to right, transparent, #d4af37, transparent);"></div>
-                            <p style="color: #fff; font-size: 42px; font-weight: bold; margin: 0; text-shadow: 3px 3px 6px rgba(0,0,0,0.9);">
+                        <div class="flex items-center justify-center gap-3">
+                            <div class="flex-1 h-0.5 bg-gradient-to-r from-transparent via-yellow-500 to-transparent"></div>
+                            <p class="text-4xl font-bold text-white">
                                 ${this.currentKills}/${this.targetKills}
                             </p>
-                            <div style="flex: 1; height: 2px; background: linear-gradient(to right, transparent, #d4af37, transparent);"></div>
+                            <div class="flex-1 h-0.5 bg-gradient-to-r from-transparent via-yellow-500 to-transparent"></div>
                         </div>
-                        <p style="color: #e6d5b8; font-size: 18px; margin: 8px 0 0 0; font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif; font-weight: 500;">
+                        <p class="text-amber-200 text-sm mt-1 font-medium">
                             Máy bay địch bị tiêu diệt
                         </p>
                     </div>
                     
-                    <!-- Historical Significance -->
-                    <div style="background: linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(101, 67, 33, 0.9)); padding: 25px; border-radius: 12px; border: 3px solid #d4af37; box-shadow: 0 8px 25px rgba(0,0,0,0.8), inset 0 2px 0 rgba(255,255,255,0.1); margin-bottom: 20px;">
-                        <h4 style="color: #ffd700; margin: 0 0 15px 0; font-size: 22px; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif; border-bottom: 3px solid #d4af37; padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px;">
-                            <span style="font-size: 28px;">📜</span> Ý nghĩa lịch sử
-                        </h4>
-                        <p style="color: #fff; font-size: 17px; line-height: 1.8; margin: 0; text-align: justify; font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif; font-weight: 400;">
-                            ${levelData.significance}
-                        </p>
-                    </div>
-                    
-                    <!-- Battle Description -->
-                    <div style="background: linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(101, 67, 33, 0.9)); padding: 25px; border-radius: 12px; border: 3px solid #d4af37; box-shadow: 0 8px 25px rgba(0,0,0,0.8), inset 0 2px 0 rgba(255,255,255,0.1);">
-                        <h4 style="color: #ffd700; margin: 0 0 15px 0; font-size: 22px; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif; border-bottom: 3px solid #d4af37; padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px;">
-                            <span style="font-size: 28px;">⚔️</span> Diễn biến trận đấu
-                        </h4>
-                        <p style="color: #fff; font-size: 17px; line-height: 1.8; margin: 0; text-align: justify; font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif; font-weight: 400;">
-                            ${levelData.description}
-                        </p>
+                    <!-- Historical Info Row - 2 columns -->
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+                        <!-- Historical Significance - 2 columns -->
+                        <div class="md:col-span-2 bg-gradient-to-br from-amber-800/95 to-amber-900/90 p-4 rounded-xl border-3 border-yellow-500 shadow-2xl">
+                            <h4 class="text-base font-bold text-yellow-400 mb-2 pb-1 border-b-2 border-yellow-500 uppercase tracking-wide flex items-center gap-2">
+                                <span class="text-lg">📜</span> Ý nghĩa lịch sử
+                            </h4>
+                            <p class="text-white text-sm leading-relaxed">
+                                ${levelData.significance}
+                            </p>
+                        </div>
+                        
+                        <!-- Battle Description - 3 columns (longer) -->
+                        <div class="md:col-span-3 bg-gradient-to-br from-amber-800/95 to-amber-900/90 p-4 rounded-xl border-3 border-yellow-500 shadow-2xl">
+                            <h4 class="text-base font-bold text-yellow-400 mb-2 pb-1 border-b-2 border-yellow-500 uppercase tracking-wide flex items-center gap-2">
+                                <span class="text-lg">⚔️</span> Diễn biến trận đấu
+                            </h4>
+                            <p class="text-white text-sm leading-relaxed">
+                                ${levelData.description}
+                            </p>
+                        </div>
                     </div>
                     
                     ${this.currentLevel === 12 ? `
-                    <div style="background: linear-gradient(135deg, rgba(139, 69, 19, 0.98), rgba(101, 67, 33, 0.95)); padding: 25px; border-radius: 12px; margin-top: 20px; border: 4px solid #ffd700; box-shadow: 0 10px 30px rgba(0,0,0,0.9), inset 0 2px 0 rgba(255,255,255,0.15); text-align: center;">
-                        <div style="font-size: 50px; margin-bottom: 10px;">🏆</div>
-                        <h3 style="color: #ffd700; font-weight: bold; font-size: 26px; margin: 0 0 10px 0; text-shadow: 3px 3px 6px rgba(0,0,0,0.9); font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif; letter-spacing: 1px; text-transform: uppercase;">
-                            Hoàn thành chiến dịch
+                    <div class="bg-gradient-to-br from-amber-800 to-amber-900 p-4 rounded-xl border-4 border-yellow-400 shadow-2xl text-center">
+                        <h3 class="text-xl font-bold text-yellow-400 mb-1 uppercase tracking-wider">
+                            Hoàn thành chiến dịch 🏆
                         </h3>
-                        <p style="color: #e6d5b8; font-size: 20px; margin: 0; font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif; font-weight: 500;">
-                            "Điện Biên Phủ trên không"
+                        <p class="text-amber-200 text-lg font-medium">
+                            "Việt Bắc Thu Đông 1947!"
                         </p>
                     </div>
                     ` : ''}
@@ -1149,88 +1217,19 @@ class GameEngine {
             `;
         }
 
-        // Setup navigation buttons with historical military styling
-        const continueBtn = document.getElementById('continueBtn');
-        const homeBtn = document.getElementById('homeBtn');
+        // Setup navigation buttons with Tailwind CSS
+        restartBtn.className = 'px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl uppercase tracking-wide';
+        restartBtn.innerHTML = '🔄 Chơi lại';
+        
+        homeBtn.className = 'px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl uppercase tracking-wide';
+        homeBtn.innerHTML = '🏠 Về trang chủ';
 
-        // Remove detail button if it exists
-        let detailBtn = document.getElementById('detailBtn');
-        if (detailBtn) {
-            detailBtn.remove();
-        }
-
-        // Apply base historical button styling
-        const buttonBaseStyle = `
-            background: linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(101, 67, 33, 0.9));
-            border: 3px solid #d4af37;
-            color: #ffd700;
-            padding: 14px 28px;
-            font-size: 16px;
-            font-weight: 700;
-            font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            border-radius: 8px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.6), inset 0 2px 0 rgba(255,255,255,0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            margin: 0 8px;
-        `;
-
-        // Left button - CHƠI LẠI (restart)
-        restartBtn.style.cssText = buttonBaseStyle;
-        restartBtn.textContent = '🔄 Chơi lại';
-        restartBtn.onmouseenter = function() {
-            this.style.background = 'linear-gradient(135deg, rgba(139, 69, 19, 1), rgba(101, 67, 33, 0.95))';
-            this.style.borderColor = '#ffd700';
-            this.style.transform = 'translateY(-2px)';
-            this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.8), inset 0 2px 0 rgba(255,255,255,0.15)';
-        };
-        restartBtn.onmouseleave = function() {
-            this.style.background = 'linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(101, 67, 33, 0.9))';
-            this.style.borderColor = '#d4af37';
-            this.style.transform = 'translateY(0)';
-            this.style.boxShadow = '0 6px 20px rgba(0,0,0,0.6), inset 0 2px 0 rgba(255,255,255,0.1)';
-        };
-
-        // Middle button - VỀ TRANG CHỦ (home)
-        homeBtn.style.cssText = buttonBaseStyle;
-        homeBtn.textContent = '🏠 Về trang chủ';
-        homeBtn.onmouseenter = function() {
-            this.style.background = 'linear-gradient(135deg, rgba(139, 69, 19, 1), rgba(101, 67, 33, 0.95))';
-            this.style.borderColor = '#ffd700';
-            this.style.transform = 'translateY(-2px)';
-            this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.8), inset 0 2px 0 rgba(255,255,255,0.15)';
-        };
-        homeBtn.onmouseleave = function() {
-            this.style.background = 'linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(101, 67, 33, 0.9))';
-            this.style.borderColor = '#d4af37';
-            this.style.transform = 'translateY(0)';
-            this.style.boxShadow = '0 6px 20px rgba(0,0,0,0.6), inset 0 2px 0 rgba(255,255,255,0.1)';
-        };
-
-        // Right button - TIẾP THEO (next level) or hide if last level
         if (this.currentLevel < 12) {
-            continueBtn.style.cssText = buttonBaseStyle + `
-                background: linear-gradient(135deg, rgba(139, 69, 19, 0.98), rgba(101, 67, 33, 0.95));
-                border-color: #ffd700;
-                box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3), inset 0 2px 0 rgba(255,255,255,0.15);
-            `;
-            continueBtn.textContent = '▶️ Tiếp theo';
+            continueBtn.className = 'px-6 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-bold rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl uppercase tracking-wide';
+            continueBtn.innerHTML = '▶️ Tiếp theo';
             continueBtn.onclick = () => nextLevel();
-            continueBtn.onmouseenter = function() {
-                this.style.background = 'linear-gradient(135deg, rgba(139, 69, 19, 1), rgba(101, 67, 33, 1))';
-                this.style.transform = 'translateY(-2px)';
-                this.style.boxShadow = '0 8px 30px rgba(255, 215, 0, 0.5), inset 0 2px 0 rgba(255,255,255,0.2)';
-            };
-            continueBtn.onmouseleave = function() {
-                this.style.background = 'linear-gradient(135deg, rgba(139, 69, 19, 0.98), rgba(101, 67, 33, 0.95))';
-                this.style.transform = 'translateY(0)';
-                this.style.boxShadow = '0 6px 20px rgba(255, 215, 0, 0.3), inset 0 2px 0 rgba(255,255,255,0.15)';
-            };
+            continueBtn.style.display = 'inline-block';
         } else {
-            // Hide the continue button on the last level
             continueBtn.style.display = 'none';
         }
 
@@ -1248,23 +1247,31 @@ class GameEngine {
         const message = document.getElementById('overlayMessage');
         const continueBtn = document.getElementById('continueBtn');
         const restartBtn = document.getElementById('restartBtn');
+        const homeBtn = document.getElementById('homeBtn');
 
-        title.textContent = '💥 Nhiệm vụ thất bại';
+        title.innerHTML = `<div class="text-4xl font-bold text-red-500">💥 Nhiệm vụ thất bại</div>`;
         message.innerHTML = `
-            <p><strong>${reason}</strong></p>
-            <p>Máy bay tiêu diệt: ${this.currentKills}/${this.targetKills}</p>
-            <p>"Bảo vệ Điện Biên Phủ là nhiệm vụ thiêng liêng!"</p>
+            <div class="space-y-4">
+                <div class="bg-red-900/50 border-2 border-red-500 rounded-lg p-4">
+                    <p class="text-white text-xl font-bold mb-2">${reason}</p>
+                    <p class="text-amber-200 text-lg">Máy bay tiêu diệt: <span class="text-yellow-400 font-bold">${this.currentKills}/${this.targetKills}</span></p>
+                </div>
+            </div>
         `;
 
-        // Set up continue button for game over (failure) case
-        continueBtn.textContent = 'Thử lại';
-        continueBtn.onclick = () => {
+        // Setup buttons
+        restartBtn.className = 'px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl uppercase tracking-wide';
+        restartBtn.innerHTML = '🔄 Thử lại';
+        restartBtn.style.display = 'inline-block';
+        restartBtn.onclick = () => {
             overlay.classList.add('hidden');
-            this.restart(); // Restart the current level
+            this.restart();
         };
 
-        // Hide the restart button since continue button now handles restart
-        restartBtn.style.display = 'none';
+        homeBtn.className = 'px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl uppercase tracking-wide';
+        homeBtn.innerHTML = '🏠 Về trang chủ';
+
+        continueBtn.style.display = 'none';
 
         overlay.classList.remove('hidden');
     }
@@ -2009,66 +2016,156 @@ class GameEngine {
     }
 
     drawCrosshair() {
-        const x = this.mouse.x;
-        const y = this.mouse.y;
+        // ĐÂY LÀ CROSSHAIR - BIỂU TƯỢNG NGẮM BẮN
+        // Được vẽ lên canvas theo vị trí chuột để người chơi ngắm bắn máy bay
+        const x = this.mouse.x;  // Vị trí X của chuột trên canvas
+        const y = this.mouse.y;  // Vị trí Y của chuột trên canvas
+        const time = Date.now(); // Thời gian hiện tại cho animation
 
         this.ctx.save();
 
-        // Crosshair với hiệu ứng phát sáng
-        this.ctx.shadowColor = '#FF0000';
-        this.ctx.shadowBlur = 10;
-        this.ctx.strokeStyle = '#FF0000';
-        this.ctx.lineWidth = 3;
-        this.ctx.beginPath();
-        this.ctx.moveTo(x - 20, y);
-        this.ctx.lineTo(x - 8, y);
-        this.ctx.moveTo(x + 8, y);
-        this.ctx.lineTo(x + 20, y);
-        this.ctx.moveTo(x, y - 20);
-        this.ctx.lineTo(x, y - 8);
-        this.ctx.moveTo(x, y + 8);
-        this.ctx.lineTo(x, y + 20);
-        this.ctx.stroke();
-
-        // Crosshair trắng bên trong
-        this.ctx.shadowColor = '#FFFFFF';
-        this.ctx.shadowBlur = 5;
-        this.ctx.strokeStyle = '#FFFFFF';
-        this.ctx.lineWidth = 1;
-        this.ctx.beginPath();
-        this.ctx.moveTo(x - 15, y);
-        this.ctx.lineTo(x - 5, y);
-        this.ctx.moveTo(x + 5, y);
-        this.ctx.lineTo(x + 15, y);
-        this.ctx.moveTo(x, y - 15);
-        this.ctx.lineTo(x, y - 5);
-        this.ctx.moveTo(x, y + 5);
-        this.ctx.lineTo(x, y + 15);
-        this.ctx.stroke();
-
-        // Vòng tròn ngoài với animation
-        this.ctx.shadowBlur = 8;
+        // ===== VÒNG TRÒN NGOÀI CÙNG - Xoay chậm =====
+        // Vòng tròn lớn màu đỏ với animation xoay và pulse
+        const outerRotation = time * 0.001; // Xoay chậm
+        const outerRadius = 35 + Math.sin(time * 0.003) * 2; // Pulse nhẹ
+        
         this.ctx.strokeStyle = '#FF0000';
         this.ctx.lineWidth = 2;
+        this.ctx.shadowColor = '#FF0000';
+        this.ctx.shadowBlur = 15;
+        this.ctx.setLineDash([5, 5]); // Đường nét đứt
         this.ctx.beginPath();
-        const radius = 25 + Math.sin(Date.now() * 0.01) * 3;
-        this.ctx.arc(x, y, radius, 0, Math.PI * 2);
+        this.ctx.arc(x, y, outerRadius, outerRotation, outerRotation + Math.PI * 1.5);
+        this.ctx.stroke();
+        this.ctx.setLineDash([]); // Reset line dash
+
+        // ===== VÒNG TRÒN GIỮA - Xoay ngược chiều =====
+        // Vòng tròn vàng đậm xoay ngược chiều với ngoài
+        const middleRotation = -time * 0.002; // Xoay nhanh hơn, ngược chiều
+        const middleRadius = 25;
+        
+        this.ctx.strokeStyle = '#FFD700';
+        this.ctx.lineWidth = 2;
+        this.ctx.shadowColor = '#FFD700';
+        this.ctx.shadowBlur = 10;
+        this.ctx.beginPath();
+        this.ctx.arc(x, y, middleRadius, 0, Math.PI * 2);
         this.ctx.stroke();
 
-        // Vòng tròn trong
-        this.ctx.shadowBlur = 3;
+        // Vẽ 4 điểm nhấn trên vòng tròn giữa (xoay theo)
+        for (let i = 0; i < 4; i++) {
+            const angle = middleRotation + (i * Math.PI / 2);
+            const dotX = x + Math.cos(angle) * middleRadius;
+            const dotY = y + Math.sin(angle) * middleRadius;
+            
+            this.ctx.fillStyle = '#FFD700';
+            this.ctx.shadowBlur = 8;
+            this.ctx.beginPath();
+            this.ctx.arc(dotX, dotY, 2, 0, Math.PI * 2);
+            this.ctx.fill();
+        }
+
+        // ===== VÒNG TRÒN TRONG - Tĩnh =====
+        // Vòng tròn trắng cố định ở giữa
         this.ctx.strokeStyle = '#FFFFFF';
-        this.ctx.lineWidth = 1;
+        this.ctx.lineWidth = 1.5;
+        this.ctx.shadowColor = '#FFFFFF';
+        this.ctx.shadowBlur = 5;
         this.ctx.beginPath();
         this.ctx.arc(x, y, 15, 0, Math.PI * 2);
         this.ctx.stroke();
 
-        // Điểm giữa
-        this.ctx.fillStyle = '#FF0000';
+        // ===== TÁN XẠ - 4 hướng chính =====
+        // Các đường thẳng từ tâm ra 4 phía (trên, dưới, trái, phải)
+        const lineLength = 12; // Chiều dài đường ngắn ở trong
+        const lineGap = 8;     // Khoảng cách từ tâm
+        const outerLineStart = 18; // Vị trí bắt đầu đường dài ngoài
+        const outerLineEnd = 28;   // Vị trí kết thúc đường dài ngoài
+
+        // Đường nét bóng đỏ (nền)
+        this.ctx.strokeStyle = '#FF0000';
+        this.ctx.lineWidth = 3;
         this.ctx.shadowColor = '#FF0000';
+        this.ctx.shadowBlur = 12;
+        this.ctx.beginPath();
+        // Đường ngang (trái - phải)
+        this.ctx.moveTo(x - outerLineEnd, y);
+        this.ctx.lineTo(x - outerLineStart, y);
+        this.ctx.moveTo(x + outerLineStart, y);
+        this.ctx.lineTo(x + outerLineEnd, y);
+        // Đường dọc (trên - dưới)
+        this.ctx.moveTo(x, y - outerLineEnd);
+        this.ctx.lineTo(x, y - outerLineStart);
+        this.ctx.moveTo(x, y + outerLineStart);
+        this.ctx.lineTo(x, y + outerLineEnd);
+        this.ctx.stroke();
+
+        // Đường nét trắng (sáng) bên trong
+        this.ctx.strokeStyle = '#FFFFFF';
+        this.ctx.lineWidth = 2;
+        this.ctx.shadowColor = '#FFFFFF';
+        this.ctx.shadowBlur = 8;
+        this.ctx.beginPath();
+        // Đường ngang
+        this.ctx.moveTo(x - lineLength - lineGap, y);
+        this.ctx.lineTo(x - lineGap, y);
+        this.ctx.moveTo(x + lineGap, y);
+        this.ctx.lineTo(x + lineGap + lineLength, y);
+        // Đường dọc
+        this.ctx.moveTo(x, y - lineLength - lineGap);
+        this.ctx.lineTo(x, y - lineGap);
+        this.ctx.moveTo(x, y + lineGap);
+        this.ctx.lineTo(x, y + lineGap + lineLength);
+        this.ctx.stroke();
+
+        // ===== TÁN XẠ PHỤ - 4 góc =====
+        // Các đường ngắn ở 4 góc (45°, 135°, 225°, 315°)
+        const cornerLength = 6;
+        const cornerDistance = 22;
+        
+        this.ctx.strokeStyle = '#FFD700';
+        this.ctx.lineWidth = 1.5;
+        this.ctx.shadowColor = '#FFD700';
+        this.ctx.shadowBlur = 6;
+        
+        for (let i = 0; i < 4; i++) {
+            const angle = (Math.PI / 4) + (i * Math.PI / 2); // 45°, 135°, 225°, 315°
+            const startX = x + Math.cos(angle) * (cornerDistance - cornerLength);
+            const startY = y + Math.sin(angle) * (cornerDistance - cornerLength);
+            const endX = x + Math.cos(angle) * cornerDistance;
+            const endY = y + Math.sin(angle) * cornerDistance;
+            
+            this.ctx.beginPath();
+            this.ctx.moveTo(startX, startY);
+            this.ctx.lineTo(endX, endY);
+            this.ctx.stroke();
+        }
+
+        // ===== ĐIỂM NGẮM GIỮA =====
+        // Chấm đỏ sáng ở chính giữa với hiệu ứng pulse
+        const centerPulse = 2 + Math.sin(time * 0.008) * 0.5;
+        
+        // Vòng sáng bên ngoài điểm
+        this.ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
+        this.ctx.shadowColor = '#FF0000';
+        this.ctx.shadowBlur = 15;
+        this.ctx.beginPath();
+        this.ctx.arc(x, y, centerPulse + 2, 0, Math.PI * 2);
+        this.ctx.fill();
+        
+        // Điểm giữa chính
+        this.ctx.fillStyle = '#FF0000';
+        this.ctx.shadowColor = '#FFFFFF';
+        this.ctx.shadowBlur = 10;
+        this.ctx.beginPath();
+        this.ctx.arc(x, y, centerPulse, 0, Math.PI * 2);
+        this.ctx.fill();
+        
+        // Điểm trắng sáng bên trong
+        this.ctx.fillStyle = '#FFFFFF';
         this.ctx.shadowBlur = 5;
         this.ctx.beginPath();
-        this.ctx.arc(x, y, 2, 0, Math.PI * 2);
+        this.ctx.arc(x, y, centerPulse * 0.5, 0, Math.PI * 2);
         this.ctx.fill();
 
         this.ctx.restore();
