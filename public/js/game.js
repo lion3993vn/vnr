@@ -196,7 +196,7 @@ function pauseGame() {
     if (!game) return;
 
     game.pause();
-    showOverlay('Game Paused', 'Nhấn tiếp tục để chơi tiếp');
+    showPauseOverlay();
 }
 
 // Resume game
@@ -270,6 +270,50 @@ function nextLevel() {
         console.log('All levels completed!');
         showCompletionMessage();
     }
+}
+
+// Show pause overlay with improved UI
+function showPauseOverlay() {
+    const overlay = document.getElementById('gameOverlay');
+    const overlayTitle = document.getElementById('overlayTitle');
+    const overlayMessage = document.getElementById('overlayMessage');
+    const restartBtn = document.getElementById('restartBtn');
+    const homeBtn = document.getElementById('homeBtn');
+    const continueBtn = document.getElementById('continueBtn');
+
+    overlayTitle.innerHTML = '⏸️';
+    overlayMessage.innerHTML = `
+        <div style="padding: 20px;">
+            <h2 style="color: #ffd700; font-size: 32px; font-weight: 700; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-family: 'Times New Roman', Times, serif; letter-spacing: 1px;">
+                Tạm dừng
+            </h2>
+            <p style="color: #e6d5b8; font-size: 20px; margin-bottom: 25px; font-family: 'Times New Roman', Times, serif;">
+                Trò chơi đang tạm dừng
+            </p>
+            <div style="background: linear-gradient(135deg, rgba(139, 69, 19, 0.6), rgba(101, 67, 33, 0.5)); padding: 20px; border-radius: 12px; border: 3px solid #d4af37; margin-top: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);">
+                <h4 style="color: #ffd700; font-size: 18px; margin-bottom: 10px; font-family: 'Times New Roman', Times, serif; border-bottom: 2px solid #d4af37; padding-bottom: 5px;">💡 Hướng dẫn chiến đấu:</h4>
+                <p style="color: #e6d5b8; font-size: 16px; line-height: 1.6; text-align: left; margin: 0; font-family: 'Times New Roman', Times, serif;">
+                    • Di chuyển chuột để nhắm mục tiêu<br>
+                    • Click chuột trái để bắn<br>
+                    • Nhấn SPACE để tạm dừng<br>
+                    • Ưu tiên bắn máy bay B-52 để ghi điểm cao
+                </p>
+            </div>
+        </div>
+    `;
+
+    // Setup buttons for pause screen
+    restartBtn.style.display = 'inline-block';
+    restartBtn.textContent = '🔄 CHƠI LẠI';
+    
+    homeBtn.style.display = 'inline-block';
+    homeBtn.textContent = '🏠 VỀ TRANG CHỦ';
+    
+    continueBtn.style.display = 'inline-block';
+    continueBtn.textContent = '▶️ TIẾP TỤC';
+    continueBtn.onclick = () => resumeGame();
+
+    overlay.classList.remove('hidden');
 }
 
 // Show overlay

@@ -1,4 +1,4 @@
-// Game Engine cho Điện Biên Phủ - Phiên bản hoàn chỉnh
+﻿// Game Engine cho Điện Biên Phủ - Phiên bản hoàn chỉnh
 class GameEngine {
     constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
@@ -1074,92 +1074,164 @@ class GameEngine {
             title.textContent = '🎉 Hoàn thành màn chơi!';
             message.innerHTML = `<p>Chúc mừng! Bạn đã hoàn thành ngày ${this.currentLevel}</p>`;
         } else {
-            // Display historical content
+            // Display historical content with refined design
             title.innerHTML = `
-                <div style="background: #d32f2f; color: white; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 24px; font-weight: bold;">
-                    ${this.currentLevel}
+                <div style="position: relative; padding: 15px 0;">
+                    <div style="display: inline-block; background: linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(101, 67, 33, 0.9)); border: 4px solid #d4af37; padding: 12px 30px; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.8), inset 0 2px 0 rgba(255,255,255,0.1);">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="background: linear-gradient(135deg, #8b4513, #654321); color: #ffd700; border: 3px solid #d4af37; border-radius: 8px; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: bold; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);">
+                                ${this.currentLevel}
+                            </div>
+                            <div style="text-align: left;">
+                                <h2 style="color: #ffd700; margin: 0; font-size: 24px; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif; letter-spacing: 0.5px;">
+                                    ${levelData.title}
+                                </h2>
+                                <p style="color: #d4af37; margin: 4px 0 0 0; font-size: 16px; font-weight: 500; font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif;">
+                                    ${levelData.date}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             `;
 
             message.innerHTML = `
-                <div class="historical-completion">
-                    <h2 style="color: #fff; margin-bottom: 8px; font-size: 28px; font-weight: 600;">Ngày ${this.currentLevel}: ${levelData.title}</h2>
-                    <p style="color: #ccc; margin-bottom: 12px; font-size: 20px; text-align: center;">${levelData.date}</p>
+                <div class="historical-completion" style="max-width: 900px; margin: 0 auto;">
                     
-                    <div class="content-grid">
-                        <div style="background: rgba(139, 69, 19, 0.8); padding: 16px; border-radius: 8px;">
-                            <h4 style="color: #ffab40; margin-bottom: 8px; font-size: 20px; font-weight: 600;">🎯 Tổn thất Mỹ</h4>
-                            <p style="color: #ffab40; font-weight: bold; font-size: 28px; margin: 0;">
-                                ${this.currentKills} máy bay bị bắn rơi
+                    <!-- Mission Complete Banner -->
+                    <div style="background: linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(101, 67, 33, 0.9)); padding: 20px; border-radius: 12px; border: 3px solid #d4af37; box-shadow: 0 8px 25px rgba(0,0,0,0.8), inset 0 2px 0 rgba(255,255,255,0.1); margin-bottom: 20px; text-align: center;">
+                        <h3 style="color: #ffd700; font-size: 26px; font-weight: 700; margin: 0 0 10px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif; text-transform: uppercase; letter-spacing: 2px;">
+                            ⭐ NHIỆM VỤ HOÀN THÀNH ⭐
+                        </h3>
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px;">
+                            <div style="flex: 1; height: 2px; background: linear-gradient(to right, transparent, #d4af37, transparent);"></div>
+                            <p style="color: #fff; font-size: 42px; font-weight: bold; margin: 0; text-shadow: 3px 3px 6px rgba(0,0,0,0.9);">
+                                ${this.currentKills}/${this.targetKills}
                             </p>
-                            <p style="color: #ffcc80; font-size: 18px; margin-top: 4px;">
-                                Mục tiêu: ${this.targetKills} máy bay
-                            </p>
+                            <div style="flex: 1; height: 2px; background: linear-gradient(to right, transparent, #d4af37, transparent);"></div>
                         </div>
-                        
-                        <div style="background: rgba(27, 94, 32, 0.8); padding: 16px; border-radius: 8px;">
-                            <h4 style="color: #81c784; margin-bottom: 8px; font-size: 20px; font-weight: 600;">🏆 Ý nghĩa lịch sử</h4>
-                            <p style="color: #a5d6a7; font-size: 18px; line-height: 1.4; margin: 0;">
-                                ${levelData.significance}
-                            </p>
-                        </div>
+                        <p style="color: #e6d5b8; font-size: 18px; margin: 8px 0 0 0; font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif; font-weight: 500;">
+                            Máy bay địch bị tiêu diệt
+                        </p>
                     </div>
                     
-                    <div style="background: rgba(69, 90, 100, 0.6); padding: 16px; border-radius: 8px; margin-bottom: 12px;" class="full-width">
-                        <h4 style="color: #90caf9; margin-bottom: 8px; font-size: 20px; font-weight: 600;">📖 Diễn biến chi tiết</h4>
-                        <p style="color: #b0bec5; font-size: 18px; line-height: 1.5; margin: 0;">
+                    <!-- Historical Significance -->
+                    <div style="background: linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(101, 67, 33, 0.9)); padding: 25px; border-radius: 12px; border: 3px solid #d4af37; box-shadow: 0 8px 25px rgba(0,0,0,0.8), inset 0 2px 0 rgba(255,255,255,0.1); margin-bottom: 20px;">
+                        <h4 style="color: #ffd700; margin: 0 0 15px 0; font-size: 22px; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif; border-bottom: 3px solid #d4af37; padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 28px;">📜</span> Ý nghĩa lịch sử
+                        </h4>
+                        <p style="color: #fff; font-size: 17px; line-height: 1.8; margin: 0; text-align: justify; font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif; font-weight: 400;">
+                            ${levelData.significance}
+                        </p>
+                    </div>
+                    
+                    <!-- Battle Description -->
+                    <div style="background: linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(101, 67, 33, 0.9)); padding: 25px; border-radius: 12px; border: 3px solid #d4af37; box-shadow: 0 8px 25px rgba(0,0,0,0.8), inset 0 2px 0 rgba(255,255,255,0.1);">
+                        <h4 style="color: #ffd700; margin: 0 0 15px 0; font-size: 22px; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif; border-bottom: 3px solid #d4af37; padding-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 28px;">⚔️</span> Diễn biến trận đấu
+                        </h4>
+                        <p style="color: #fff; font-size: 17px; line-height: 1.8; margin: 0; text-align: justify; font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif; font-weight: 400;">
                             ${levelData.description}
                         </p>
                     </div>
                     
-                    <blockquote style="border-left: 4px solid #d32f2f; padding-left: 12px; margin: 8px 0; background: rgba(0,0,0,0.4); padding: 12px; border-radius: 6px;" class="full-width">
-                        <p style="color: #fff; font-style: italic; margin: 0; font-size: 19px; text-align: center; font-weight: 500; line-height: 1.4;">
-                            "${levelData.historicalQuote}"
+                    ${this.currentLevel === 12 ? `
+                    <div style="background: linear-gradient(135deg, rgba(139, 69, 19, 0.98), rgba(101, 67, 33, 0.95)); padding: 25px; border-radius: 12px; margin-top: 20px; border: 4px solid #ffd700; box-shadow: 0 10px 30px rgba(0,0,0,0.9), inset 0 2px 0 rgba(255,255,255,0.15); text-align: center;">
+                        <div style="font-size: 50px; margin-bottom: 10px;">🏆</div>
+                        <h3 style="color: #ffd700; font-weight: bold; font-size: 26px; margin: 0 0 10px 0; text-shadow: 3px 3px 6px rgba(0,0,0,0.9); font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif; letter-spacing: 1px; text-transform: uppercase;">
+                            Hoàn thành chiến dịch
+                        </h3>
+                        <p style="color: #e6d5b8; font-size: 20px; margin: 0; font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif; font-weight: 500;">
+                            "Điện Biên Phủ trên không"
                         </p>
-                        </p>
-                    </blockquote>
-                    
-                    <div class="full-width" style="text-align: center; margin-top: 12px;">
-                        ${this.currentLevel < 12 ?
-                    '<p style="color: #4caf50; font-weight: bold; font-size: 22px; margin: 0; padding: 10px;">✅ Ngày tiếp theo đã mở khóa!</p>' :
-                    '<p style="color: #ffd700; font-weight: bold; font-size: 22px; margin: 0; padding: 10px;">🏆 Hoàn thành chiến dịch "Điện Biên Phủ trên không"!</p>'
-                }
                     </div>
+                    ` : ''}
                 </div>
             `;
         }
 
-        // Setup navigation buttons in order: CHI TIẾT | CHƠI LẠI | VỀ TRANG CHỦ | TIẾP THEO
+        // Setup navigation buttons with historical military styling
         const continueBtn = document.getElementById('continueBtn');
         const homeBtn = document.getElementById('homeBtn');
 
-        // Add detail button if not already present
+        // Remove detail button if it exists
         let detailBtn = document.getElementById('detailBtn');
-        if (!detailBtn) {
-            detailBtn = document.createElement('button');
-            detailBtn.id = 'detailBtn';
-            detailBtn.textContent = '📚 XEM CHI TIẾT';
-            detailBtn.onclick = () => this.viewDayDetail();
-
-            const buttonContainer = document.querySelector('.overlay-buttons');
-            buttonContainer.insertBefore(detailBtn, buttonContainer.firstChild);
+        if (detailBtn) {
+            detailBtn.remove();
         }
 
+        // Apply base historical button styling
+        const buttonBaseStyle = `
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(101, 67, 33, 0.9));
+            border: 3px solid #d4af37;
+            color: #ffd700;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Be Vietnam Pro', 'Times New Roman', Times, serif;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6), inset 0 2px 0 rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            margin: 0 8px;
+        `;
+
         // Left button - CHƠI LẠI (restart)
-        restartBtn.style.display = 'inline-block';
-        restartBtn.textContent = 'CHƠI LẠI';
+        restartBtn.style.cssText = buttonBaseStyle;
+        restartBtn.textContent = '🔄 Chơi lại';
+        restartBtn.onmouseenter = function() {
+            this.style.background = 'linear-gradient(135deg, rgba(139, 69, 19, 1), rgba(101, 67, 33, 0.95))';
+            this.style.borderColor = '#ffd700';
+            this.style.transform = 'translateY(-2px)';
+            this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.8), inset 0 2px 0 rgba(255,255,255,0.15)';
+        };
+        restartBtn.onmouseleave = function() {
+            this.style.background = 'linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(101, 67, 33, 0.9))';
+            this.style.borderColor = '#d4af37';
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 6px 20px rgba(0,0,0,0.6), inset 0 2px 0 rgba(255,255,255,0.1)';
+        };
 
         // Middle button - VỀ TRANG CHỦ (home)
-        homeBtn.style.display = 'inline-block';
-        homeBtn.textContent = 'VỀ TRANG CHỦ';
+        homeBtn.style.cssText = buttonBaseStyle;
+        homeBtn.textContent = '🏠 Về trang chủ';
+        homeBtn.onmouseenter = function() {
+            this.style.background = 'linear-gradient(135deg, rgba(139, 69, 19, 1), rgba(101, 67, 33, 0.95))';
+            this.style.borderColor = '#ffd700';
+            this.style.transform = 'translateY(-2px)';
+            this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.8), inset 0 2px 0 rgba(255,255,255,0.15)';
+        };
+        homeBtn.onmouseleave = function() {
+            this.style.background = 'linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(101, 67, 33, 0.9))';
+            this.style.borderColor = '#d4af37';
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 6px 20px rgba(0,0,0,0.6), inset 0 2px 0 rgba(255,255,255,0.1)';
+        };
 
         // Right button - TIẾP THEO (next level) or hide if last level
         if (this.currentLevel < 12) {
-            continueBtn.textContent = 'TIẾP THEO';
+            continueBtn.style.cssText = buttonBaseStyle + `
+                background: linear-gradient(135deg, rgba(139, 69, 19, 0.98), rgba(101, 67, 33, 0.95));
+                border-color: #ffd700;
+                box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3), inset 0 2px 0 rgba(255,255,255,0.15);
+            `;
+            continueBtn.textContent = '▶️ Tiếp theo';
             continueBtn.onclick = () => nextLevel();
-            continueBtn.style.display = 'inline-block';
+            continueBtn.onmouseenter = function() {
+                this.style.background = 'linear-gradient(135deg, rgba(139, 69, 19, 1), rgba(101, 67, 33, 1))';
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 8px 30px rgba(255, 215, 0, 0.5), inset 0 2px 0 rgba(255,255,255,0.2)';
+            };
+            continueBtn.onmouseleave = function() {
+                this.style.background = 'linear-gradient(135deg, rgba(139, 69, 19, 0.98), rgba(101, 67, 33, 0.95))';
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 6px 20px rgba(255, 215, 0, 0.3), inset 0 2px 0 rgba(255,255,255,0.15)';
+            };
         } else {
-            // Hide the continue button on the last level since we already have home button
+            // Hide the continue button on the last level
             continueBtn.style.display = 'none';
         }
 
@@ -2060,44 +2132,154 @@ class GameEngine {
     }
 
     drawUI() {
-        // Draw kill counter
-        this.ctx.fillStyle = '#FFFFFF';
-        this.ctx.font = 'bold 30px Arial';
-        this.ctx.fillText(`${this.currentKills}/${this.targetKills}`, 15, 45);
+        this.ctx.save();
+        
+        // Draw kill counter with historical visual
+        const killPanel = { x: 20, y: 20, width: 200, height: 60 };
+        
+        // Kill counter background - brown historical theme
+        this.ctx.fillStyle = 'rgba(101, 67, 33, 0.9)';
+        this.ctx.shadowColor = 'rgba(212, 175, 55, 0.6)';
+        this.ctx.shadowBlur = 15;
+        this.ctx.fillRect(killPanel.x, killPanel.y, killPanel.width, killPanel.height);
+        
+        // Border with gold gradient
+        const killGradient = this.ctx.createLinearGradient(killPanel.x, killPanel.y, killPanel.x + killPanel.width, killPanel.y);
+        killGradient.addColorStop(0, '#d4af37');
+        killGradient.addColorStop(1, '#ffd700');
+        this.ctx.strokeStyle = killGradient;
+        this.ctx.lineWidth = 3;
+        this.ctx.strokeRect(killPanel.x, killPanel.y, killPanel.width, killPanel.height);
+        
+        // Kill counter label
+        this.ctx.shadowBlur = 0;
+        this.ctx.fillStyle = '#e6d5b8';
+        this.ctx.font = 'bold 14px "Times New Roman", Times, serif';
+        this.ctx.fillText('🎯 MÁY BAY', killPanel.x + 10, killPanel.y + 20);
+        
+        // Kill counter value
+        this.ctx.fillStyle = this.currentKills >= this.targetKills ? '#ffd700' : '#ffd700';
+        this.ctx.font = 'bold 28px "Times New Roman", Times, serif';
+        this.ctx.shadowColor = '#ffd700';
+        this.ctx.shadowBlur = 10;
+        this.ctx.fillText(`${this.currentKills}/${this.targetKills}`, killPanel.x + 10, killPanel.y + 50);
 
-        // Draw level timer
+        // Draw level timer with historical visual
         const totalSeconds = Math.max(0, Math.floor(this.levelTimer / 1000));
         const minutes = Math.floor(totalSeconds / 60);
         const seconds = totalSeconds % 60;
-        this.ctx.fillText(`${minutes}:${seconds.toString().padStart(2, '0')}`, this.width - 120, 45);
+        const timerText = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        
+        const timerPanel = { x: this.width - 170, y: 20, width: 150, height: 60 };
+        
+        // Timer background - brown historical theme
+        this.ctx.shadowBlur = 15;
+        this.ctx.shadowColor = 'rgba(212, 175, 55, 0.6)';
+        this.ctx.fillStyle = 'rgba(101, 67, 33, 0.9)';
+        this.ctx.fillRect(timerPanel.x, timerPanel.y, timerPanel.width, timerPanel.height);
+        
+        // Border with gold gradient
+        const timerGradient = this.ctx.createLinearGradient(timerPanel.x, timerPanel.y, timerPanel.x + timerPanel.width, timerPanel.y);
+        timerGradient.addColorStop(0, '#d4af37');
+        timerGradient.addColorStop(1, '#ffd700');
+        this.ctx.strokeStyle = timerGradient;
+        this.ctx.lineWidth = 3;
+        this.ctx.strokeRect(timerPanel.x, timerPanel.y, timerPanel.width, timerPanel.height);
+        
+        // Timer label
+        this.ctx.shadowBlur = 0;
+        this.ctx.fillStyle = '#e6d5b8';
+        this.ctx.font = 'bold 14px "Times New Roman", Times, serif';
+        this.ctx.fillText('⏱️ THỜI GIAN', timerPanel.x + 10, timerPanel.y + 20);
+        
+        // Timer value
+        this.ctx.fillStyle = '#ffd700';
+        this.ctx.font = 'bold 28px "Times New Roman", Times, serif';
+        this.ctx.shadowColor = '#ffd700';
+        this.ctx.shadowBlur = 10;
+        this.ctx.fillText(timerText, timerPanel.x + 10, timerPanel.y + 50);
 
-        // Draw unified defense health bar
+        // Draw unified defense health bar with historical visual
         const healthRatio = this.defenseHealth / this.maxDefenseHealth;
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-        this.ctx.fillRect(15, 80, 300, 30);
+        const healthPanel = { x: 20, y: 95, width: 350, height: 50 };
+        
+        // Health panel background - brown historical theme
+        this.ctx.shadowBlur = 15;
+        this.ctx.shadowColor = 'rgba(212, 175, 55, 0.6)';
+        this.ctx.fillStyle = 'rgba(101, 67, 33, 0.9)';
+        this.ctx.fillRect(healthPanel.x, healthPanel.y, healthPanel.width, healthPanel.height);
+        
+        // Border with health-based gold tones
+        const healthBorderGradient = this.ctx.createLinearGradient(healthPanel.x, healthPanel.y, healthPanel.x + healthPanel.width, healthPanel.y);
+        if (healthRatio > 0.7) {
+            healthBorderGradient.addColorStop(0, '#d4af37');
+            healthBorderGradient.addColorStop(1, '#ffd700');
+        } else if (healthRatio > 0.3) {
+            healthBorderGradient.addColorStop(0, '#d4af37');
+            healthBorderGradient.addColorStop(1, '#ffa500');
+        } else {
+            healthBorderGradient.addColorStop(0, '#8b4513');
+            healthBorderGradient.addColorStop(1, '#a0522d');
+        }
+        this.ctx.strokeStyle = healthBorderGradient;
+        this.ctx.lineWidth = 3;
+        this.ctx.strokeRect(healthPanel.x, healthPanel.y, healthPanel.width, healthPanel.height);
+        
+        // Health bar label
+        this.ctx.shadowBlur = 0;
+        this.ctx.fillStyle = '#e6d5b8';
+        this.ctx.font = 'bold 14px "Times New Roman", Times, serif';
+        this.ctx.fillText('🛡️ MẶT TRẬN PHÒNG THỦ', healthPanel.x + 10, healthPanel.y + 18);
 
-        // Health bar background
-        this.ctx.fillStyle = '#404040';
-        this.ctx.fillRect(18, 83, 294, 24);
+        // Health bar background - dark brown
+        const barX = healthPanel.x + 10;
+        const barY = healthPanel.y + 25;
+        const barWidth = healthPanel.width - 20;
+        const barHeight = 15;
+        
+        this.ctx.fillStyle = 'rgba(50, 33, 19, 0.9)';
+        this.ctx.fillRect(barX, barY, barWidth, barHeight);
 
-        // Health bar fill
-        const healthColor = healthRatio > 0.7 ? '#00FF00' :
-            healthRatio > 0.3 ? '#FFFF00' : '#FF0000';
-        this.ctx.fillStyle = healthColor;
-        this.ctx.fillRect(18, 83, 294 * healthRatio, 24);
+        // Health bar fill with historical gradient
+        if (healthRatio > 0) {
+            const healthBarGradient = this.ctx.createLinearGradient(barX, barY, barX + barWidth * healthRatio, barY);
+            if (healthRatio > 0.7) {
+                healthBarGradient.addColorStop(0, '#d4af37');
+                healthBarGradient.addColorStop(1, '#ffd700');
+            } else if (healthRatio > 0.3) {
+                healthBarGradient.addColorStop(0, '#d4af37');
+                healthBarGradient.addColorStop(1, '#ffa500');
+            } else {
+                healthBarGradient.addColorStop(0, '#8b4513');
+                healthBarGradient.addColorStop(1, '#a0522d');
+            }
+            
+            this.ctx.fillStyle = healthBarGradient;
+            this.ctx.shadowBlur = 10;
+            this.ctx.shadowColor = healthRatio > 0.7 ? '#ffd700' : (healthRatio > 0.3 ? '#ffd700' : '#8b4513');
+            this.ctx.fillRect(barX, barY, barWidth * healthRatio, barHeight);
+            
+            // Shine effect on health bar
+            this.ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            this.ctx.shadowBlur = 0;
+            this.ctx.fillRect(barX, barY, barWidth * healthRatio, 3);
+        }
 
-        // Health bar border
-        this.ctx.strokeStyle = '#FFFFFF';
-        this.ctx.lineWidth = 1;
-        this.ctx.strokeRect(18, 83, 294, 24);
-
-        // Defense strength label
-        this.ctx.fillStyle = '#FFFFFF';
-        this.ctx.font = '18px Arial';
-        this.ctx.fillText('Sức Mạnh Mặt Trận', 18, 77);
+        // Health bar border - gold
+        this.ctx.strokeStyle = '#d4af37';
+        this.ctx.lineWidth = 2;
+        this.ctx.strokeRect(barX, barY, barWidth, barHeight);
 
         // Health value text
-        this.ctx.fillText(`${Math.ceil(this.defenseHealth)}/${this.maxDefenseHealth}`, 330, 100);
+        this.ctx.shadowBlur = 5;
+        this.ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+        this.ctx.fillStyle = '#ffd700';
+        this.ctx.font = 'bold 12px "Times New Roman", Times, serif';
+        this.ctx.textAlign = 'center';
+        this.ctx.fillText(`${Math.ceil(this.defenseHealth)} / ${this.maxDefenseHealth}`, barX + barWidth / 2, barY + 11);
+        this.ctx.textAlign = 'left';
+        
+        this.ctx.restore();
 
         // Draw active power-ups
         this.drawActivePowerUps();
@@ -2117,13 +2299,21 @@ class GameEngine {
 
                 const powerUpData = gameConfig.powerUps.find(p => p.type === type);
                 if (powerUpData) {
-                    // Power-up background
-                    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                    // Power-up background - historical brown theme
+                    this.ctx.fillStyle = 'rgba(101, 67, 33, 0.85)';
+                    this.ctx.shadowColor = 'rgba(212, 175, 55, 0.4)';
+                    this.ctx.shadowBlur = 8;
                     this.ctx.fillRect(this.width - 200, yOffset, 180, 25);
+                    
+                    // Gold border
+                    this.ctx.strokeStyle = '#d4af37';
+                    this.ctx.lineWidth = 2;
+                    this.ctx.strokeRect(this.width - 200, yOffset, 180, 25);
 
                     // Power-up icon and name
-                    this.ctx.fillStyle = powerUpData.color;
-                    this.ctx.font = '16px Arial';
+                    this.ctx.shadowBlur = 0;
+                    this.ctx.fillStyle = '#ffd700';
+                    this.ctx.font = '16px "Times New Roman", Times, serif';
                     this.ctx.fillText(`${powerUpData.icon} ${powerUpData.name}: ${seconds}s`, this.width - 195, yOffset + 17);
 
                     yOffset += 30;
@@ -2143,14 +2333,14 @@ class GameEngine {
             this.ctx.globalAlpha = alpha;
             this.ctx.fillStyle = message.color;
 
-            // Enhanced styling for power-up notifications
+            // Enhanced styling for power-up notifications with historical font
             if (message.isPowerUp) {
-                this.ctx.font = 'bold 28px Arial';
+                this.ctx.font = 'bold 28px "Times New Roman", Times, serif';
                 // Glowing effect for power-up messages
                 this.ctx.shadowColor = message.color;
                 this.ctx.shadowBlur = 10;
             } else {
-                this.ctx.font = 'bold 24px Arial';
+                this.ctx.font = 'bold 24px "Times New Roman", Times, serif';
                 // Normal shadow for regular messages
                 this.ctx.shadowColor = '#000000';
                 this.ctx.shadowBlur = 3;
@@ -2166,3 +2356,4 @@ class GameEngine {
         });
     }
 }
+

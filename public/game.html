@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Game Việt Bắc Thu Đông - Màn Chơi</title>
-    <link rel="stylesheet" href="css/game.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&amp;display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style type="text/css">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>Game Việt Bắc Thu Đông - Màn Chơi</title>
+        <link rel="stylesheet" href="css/game.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap&subset=vietnamese" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <style type="text/css">
         #envidictionary * :not(svg, path) {
             all: revert
         }
@@ -440,8 +440,8 @@
         #gtx-trans {
             z-index: 2147483637 !important
         }
-    </style>
-    <style id="mttstyle">
+        </style>
+        <style id="mttstyle">
         #mttContainer {
             left: 0 !important;
             top: 0 !important;
@@ -478,148 +478,172 @@
             border-top-color: #b3ecff !important;
             border-bottom-color: #b3ecff !important;
         }
-    </style>
-</head>
-
-<body>
-    <div class="game-container">
-        <!-- Header với thông tin level -->
-        <header class="game-header">
-            <div class="level-info">
-                <h1 id="levelTitle">Ngày 1: Mỹ mở màn tập kích bằng B-52</h1>
-                <p id="levelDate">18/12/1972</p>
-            </div>
-            <div class="game-stats">
-                <div class="stat">
-                    <span class="label">Mục tiêu:</span>
-                    <span id="objective">Bắn hạ 3 máy bay B-52 trong đợt oanh tạc đầu tiên</span>
+        </style>
+    </head>
+    <body>
+        <div class="game-container">
+            <!-- Header với thông tin level -->
+            <header class="game-header">
+                <div class="level-info">
+                    <h1 id="levelTitle">Ngày 1: Mỹ mở màn tập kích bằng B-52</h1>
+                    <p id="levelDate">18/12/1972</p>
+                </div>
+                <div class="game-stats">
+                    <div class="stat">
+                        <span class="label">Mục tiêu:</span>
+                        <span id="objective">Bắn hạ 3 máy bay B-52 trong đợt oanh tạc đầu tiên</span>
+                    </div>
+                </div>
+                <button class="pause-btn" onclick="togglePause()">⏸️</button>
+            </header>
+            <!-- Khung game chính -->
+            <div class="game-area">
+                <canvas
+                    id="gameCanvas"
+                    width="1400"
+                    height="800"
+                    style="width: 1308.83px; height: 747.9px;"
+                ></canvas>
+                <!-- Overlay cho pause/game over -->
+                <div id="gameOverlay" class="overlay">
+                    <div class="overlay-content">
+                        <h2 id="overlayTitle">Game Paused</h2>
+                        <p id="overlayMessage">Nhấn tiếp tục để chơi tiếp</p>
+                        <div class="overlay-buttons">
+                            <button id="restartBtn" onclick="restartLevel()">Chơi lại</button>
+                            <button id="homeBtn" onclick="goHome()">Về trang chủ</button>
+                            <button id="continueBtn" onclick="resumeGame()">Tiếp tục</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <button class="pause-btn" onclick="togglePause()">⏸️</button>
-        </header>
-
-        <!-- Khung game chính -->
-        <div class="game-area">
-            <canvas id="gameCanvas" width="1400" height="800" style="width: 1308.83px; height: 747.9px;"></canvas>
-
-            <!-- Overlay cho pause/game over -->
-            <div id="gameOverlay" class="overlay">
-                <div class="overlay-content">
-                    <h2 id="overlayTitle">Game Paused</h2>
-                    <p id="overlayMessage">Nhấn tiếp tục để chơi tiếp</p>
-                    <div class="overlay-buttons">
-                        <button id="restartBtn" onclick="restartLevel()">Chơi lại</button>
-                        <button id="homeBtn" onclick="goHome()">Về trang chủ</button>
-                        <button id="continueBtn" onclick="resumeGame()">Tiếp tục</button>
+            <!-- Panel thông tin lịch sử -->
+            <div class="history-panel" id="historyPanel">
+                <button class="toggle-history" onclick="toggleHistory()">
+                    📚 Thông tin lịch sử
+                </button>
+                <div class="history-content">
+                    <h3>Bối cảnh lịch sử</h3>
+                    <div id="historicalContext">
+                        <p>
+                            <strong>Bối cảnh:</strong>
+                            Đêm 18/12/1972, Mỹ huy động 90 lần chiếc B-52 cùng hàng trăm máy bay
+                        chiến thuật, mở màn cuộc tập kích chiến lược vào Hà Nội, Hải Phòng.
+                        </p>
+                        <p>
+                            <strong>Nhân vật quan trọng:</strong> Quân chủng Phòng không - Không quân, Tiểu đoàn 59
+                        </p>
+                        <p>
+                            <strong>Tầm quan trọng chiến lược:</strong> Khẳng định quyết tâm đánh B-52 của ta
+                        </p>
+                    </div>
+                    <h3>Ý nghĩa</h3>
+                    <div id="historicalSignificance">
+                        <p>Bước mở đầu của chiến dịch Linebacker II, Mỹ muốn 'đưa miền Bắc về thời kỳ đồ đá'.</p>
+                        <div class="difficulty-indicator">
+                            <strong>Độ khó:</strong>
+                            ⭐ (1/12)
+                        </div>
+                    </div>
+                    <div class="historical-quote">
+                        <blockquote id="historicalQuote">Máy bay B-52 cũng có thể bị bắn rơi tại chỗ!</blockquote>
+                    </div>
+                </div>
+            </div>
+            <!-- Controls info -->
+            <div class="controls-info">
+                <h4>Điều khiển:</h4>
+                <p>🖱️ Di chuyển chuột để nhắm | Click để bắn | SPACE để pause</p>
+            </div>
+            <!-- Sound toggle button -->
+            <div
+                class="sound-toggle"
+                id="soundToggle"
+                onclick="toggleSound()"
+                title="Tắt âm thanh"
+            >
+                <span id="soundIcon">🔊</span>
+            </div>
+        </div>
+        <!-- Audio elements -->
+        <audio id="gameMusic" loop="">
+            <source src="assets/audio/game_music.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="shootSound" volume="0.3">
+            <source src="assets/audio/fire.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="explosionSound">
+            <source src="assets/audio/explosion.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="powerUpSound">
+            <source src="assets/audio/powerup.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="victorySound">
+            <source src="assets/audio/victory.wav" type="audio/wav">
+        </audio>
+        <audio id="bulletHitSound" volume="0.4">
+            <source src="assets/audio/bullethit.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="bombFallSound" volume="0.4">
+            <source src="assets/audio/bombfall.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="planeExplosionSound" volume="0.4">
+            <source src="assets/audio/explosion-plane.mp3" type="audio/mpeg">
+        </audio>
+        <script src="js/data.js"></script>
+        <script src="js/game-engine.js"></script>
+        <script src="js/game.js"></script>
+        <div id="envidictionary">
+            <div class="o-search-mobile" style="top: 0px; left: 0px; display: none;">
+                <img
+                    alt="ENVI"
+                    width="27"
+                    height="27"
+                    src="data:image/png;base64,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"
+                    style="width: 27px; height: 27px;"
+                >
+            </div>
+            <div class="o-popup-tag o-bg-white o-border o-rounded o-shadow" style="width: 400px; top: 0px; left: 0px; display: none;">
+                <div>
+                    <button type="button" aria-label="Close" class="o-btn-close o-position-absolute o-top-0 o-end-0 o-mt-1 o-me-1"></button>
+                    <ul role="tablist" class="o-nav o-nav-tabs o-pop-nav">
+                        <span>
+                            <svg
+                                aria-hidden="true"
+                                focusable="false"
+                                data-icon="volume-high"
+                                role="img"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 640 512"
+                                class="o-pop-speak o-link-secondary o-svg-inline--fa"
+                            >
+                                <path fill="currentColor" d="M533.6 32.5C598.5 85.3 640 165.8 640 256s-41.5 170.8-106.4 223.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C557.5 398.2 592 331.2 592 256s-34.5-142.2-88.7-186.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM473.1 107c43.2 35.2 70.9 88.9 70.9 149s-27.7 113.8-70.9 149c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C475.3 341.3 496 301.1 496 256s-20.7-85.3-53.2-111.8c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zm-60.5 74.5C434.1 199.1 448 225.9 448 256s-13.9 56.9-35.4 74.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C393.1 284.4 400 271 400 256s-6.9-28.4-17.7-37.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM301.1 34.8C312.6 40 320 51.4 320 64V448c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352H64c-35.3 0-64-28.7-64-64V224c0-35.3 28.7-64 64-64h67.8L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3z"></path>
+                            </svg>
+                        </span>
+                        <li role="presentation" class="o-nav-item">
+                            <div data-bs-toggle="tab" aria-selected="true" class="o-nav-link o-active">Tra cứu</div>
+                        </li>
+                        <li role="presentation" class="o-nav-item">
+                            <div data-bs-toggle="tab" aria-selected="false" class="o-nav-link">Dịch</div>
+                        </li>
+                        <li role="presentation" class="o-nav-item">
+                            <div data-bs-toggle="tab" aria-selected="false" class="o-nav-link">Cài đặt</div>
+                        </li>
+                    </ul>
+                    <div class="o-selected-result o-pt-1">
+                        <div> Đang tìm kiếm ...</div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Panel thông tin lịch sử -->
-        <div class="history-panel" id="historyPanel">
-            <button class="toggle-history" onclick="toggleHistory()">
-                📚 Thông tin lịch sử
-            </button>
-            <div class="history-content">
-                <h3>Bối cảnh lịch sử</h3>
-                <div id="historicalContext">
-                    <p><strong>Bối cảnh:</strong> Đêm 18/12/1972, Mỹ huy động 90 lần chiếc B-52 cùng hàng trăm máy bay
-                        chiến thuật, mở màn cuộc tập kích chiến lược vào Hà Nội, Hải Phòng.</p>
-                    <p><strong>Nhân vật quan trọng:</strong> Quân chủng Phòng không - Không quân, Tiểu đoàn 59</p>
-                    <p><strong>Tầm quan trọng chiến lược:</strong> Khẳng định quyết tâm đánh B-52 của ta</p>
-                </div>
-                <h3>Ý nghĩa</h3>
-                <div id="historicalSignificance">
-                    <p>Bước mở đầu của chiến dịch Linebacker II, Mỹ muốn 'đưa miền Bắc về thời kỳ đồ đá'.</p>
-                    <div class="difficulty-indicator">
-                        <strong>Độ khó:</strong> ⭐ (1/12)
-                    </div>
-                </div>
-                <div class="historical-quote">
-                    <blockquote id="historicalQuote">Máy bay B-52 cũng có thể bị bắn rơi tại chỗ!</blockquote>
-                </div>
-            </div>
-        </div>
-
-        <!-- Controls info -->
-        <div class="controls-info">
-            <h4>Điều khiển:</h4>
-            <p>🖱️ Di chuyển chuột để nhắm | Click để bắn | SPACE để pause</p>
-        </div>
-
-        <!-- Sound toggle button -->
-        <div class="sound-toggle" id="soundToggle" onclick="toggleSound()" title="Tắt âm thanh">
-            <span id="soundIcon">🔊</span>
-        </div>
-    </div>
-
-    <!-- Audio elements -->
-    <audio id="gameMusic" loop="">
-        <source src="assets/audio/game_music.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="shootSound" volume="0.3">
-        <source src="assets/audio/fire.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="explosionSound">
-        <source src="assets/audio/explosion.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="powerUpSound">
-        <source src="assets/audio/powerup.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="victorySound">
-        <source src="assets/audio/victory.wav" type="audio/wav">
-    </audio>
-    <audio id="bulletHitSound" volume="0.4">
-        <source src="assets/audio/bullethit.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="bombFallSound" volume="0.4">
-        <source src="assets/audio/bombfall.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="planeExplosionSound" volume="0.4">
-        <source src="assets/audio/explosion-plane.mp3" type="audio/mpeg">
-    </audio>
-
-    <script src="js/data.js"></script>
-    <script src="js/game-engine.js"></script>
-    <script src="js/game.js"></script>
-
-
-    <div id="envidictionary">
-        <div class="o-search-mobile" style="top: 0px; left: 0px; display: none;"><img alt="ENVI" width="27" height="27"
-                src="data:image/png;base64,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"
-                style="width: 27px; height: 27px;"></div>
-        <div class="o-popup-tag o-bg-white o-border o-rounded o-shadow"
-            style="width: 400px; top: 0px; left: 0px; display: none;">
-            <div><button type="button" aria-label="Close"
-                    class="o-btn-close o-position-absolute o-top-0 o-end-0 o-mt-1 o-me-1"></button>
-                <ul role="tablist" class="o-nav o-nav-tabs o-pop-nav"><span><svg aria-hidden="true" focusable="false"
-                            data-icon="volume-high" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"
-                            class="o-pop-speak o-link-secondary o-svg-inline--fa">
-                            <path fill="currentColor"
-                                d="M533.6 32.5C598.5 85.3 640 165.8 640 256s-41.5 170.8-106.4 223.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C557.5 398.2 592 331.2 592 256s-34.5-142.2-88.7-186.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM473.1 107c43.2 35.2 70.9 88.9 70.9 149s-27.7 113.8-70.9 149c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C475.3 341.3 496 301.1 496 256s-20.7-85.3-53.2-111.8c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zm-60.5 74.5C434.1 199.1 448 225.9 448 256s-13.9 56.9-35.4 74.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C393.1 284.4 400 271 400 256s-6.9-28.4-17.7-37.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM301.1 34.8C312.6 40 320 51.4 320 64V448c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352H64c-35.3 0-64-28.7-64-64V224c0-35.3 28.7-64 64-64h67.8L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3z">
-                            </path>
-                        </svg></span>
-                    <li role="presentation" class="o-nav-item">
-                        <div data-bs-toggle="tab" aria-selected="true" class="o-nav-link o-active">Tra cứu</div>
-                    </li>
-                    <li role="presentation" class="o-nav-item">
-                        <div data-bs-toggle="tab" aria-selected="false" class="o-nav-link">Dịch</div>
-                    </li>
-                    <li role="presentation" class="o-nav-item">
-                        <div data-bs-toggle="tab" aria-selected="false" class="o-nav-link">Cài đặt</div>
-                    </li>
-                </ul>
-                <div class="o-selected-result o-pt-1">
-                    <div> Đang tìm kiếm ... </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="envidictionarySetting" url="https://envi.jpdictionary.com/setting/"></div>
-    <div id="envidictionaryOff" class="envidictionary-off"></div>
-    <div id="mttContainer" class="bootstrapiso notranslate" data-original-title="" title=""
-        style="transform: translate(1446px, 273px);"></div>
-</body>
-
+        <div id="envidictionarySetting" url="https://envi.jpdictionary.com/setting/"></div>
+        <div id="envidictionaryOff" class="envidictionary-off"></div>
+        <div
+            id="mttContainer"
+            class="bootstrapiso notranslate"
+            data-original-title=""
+            title=""
+            style="transform: translate(1446px, 273px);"
+        ></div>
+    </body>
 </html>
