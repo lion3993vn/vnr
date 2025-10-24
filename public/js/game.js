@@ -19,9 +19,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Start game
     showLoadingScreen();
+    
+    // Set transitioning flag early to prevent any premature auto-pause
+    isTransitioning = true;
+    
     setTimeout(() => {
         hideLoadingScreen();
         game.start();
+        // Clear transition flag after game is fully started and settled
+        setTimeout(() => {
+            isTransitioning = false;
+        }, 2000);
     }, 6000);
 
     // Setup event listeners
