@@ -2,6 +2,7 @@
 let game;
 let currentLevel = 1;
 let isTransitioning = false; // Flag to prevent auto-pause during level transitions
+let isInitialLoad = true; // Flag to prevent auto-pause during initial game load
 
 // Initialize game when page loads
 document.addEventListener('DOMContentLoaded', function () {
@@ -22,6 +23,10 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(() => {
         hideLoadingScreen();
         game.start();
+        // Clear initial load flag after a short delay to allow game to fully start
+        setTimeout(() => {
+            isInitialLoad = false;
+        }, 1000);
     }, 6000);
 
     // Setup event listeners
@@ -533,14 +538,14 @@ setInterval(() => {
 
 // Handle page visibility change
 document.addEventListener('visibilitychange', function () {
-    if (document.hidden && game && game.isRunning && !game.isPaused && !isTransitioning) {
+    if (document.hidden && game && game.isRunning && !game.isPaused && !isTransitioning && !isInitialLoad) {
         pauseGame();
     }
 });
 
 // Handle window focus/blur
 window.addEventListener('blur', function () {
-    if (game && game.isRunning && !game.isPaused && !isTransitioning) {
+    if (game && game.isRunning && !game.isPaused && !isTransitioning && !isInitialLoad) {
         pauseGame();
     }
 });
