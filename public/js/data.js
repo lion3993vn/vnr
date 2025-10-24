@@ -8,6 +8,7 @@ const historicalData = [
     significance: "Mốc khởi đầu chiến dịch, đối phương dựa mạnh vào vận tải và trinh sát đường không.",
     gameObjective: "Bắn hạ 1 máy bay vận tải hoặc trinh sát hộ tống đợt nhảy dù",
     difficulty: 1,
+    target: 5,
     historicalQuote: "Chúng chỉ mạnh lúc đầu. Giữ được chủ lực qua mùa đông là thắng.",
     keyFigures: ["Jean-Étienne Valluy", "Henri Sauvagnac"],
     strategicImportance: "Phá rối cầu hàng không ban đầu để làm chậm thế tiến công"
@@ -20,6 +21,7 @@ const historicalData = [
     significance: "Tăng mật độ máy bay trinh sát và vận tải về Việt Bắc.",
     gameObjective: "Ngăn 2 đợt thả dù tiếp tế; bắn rơi 1 C-47/AAC.1",
     difficulty: 2,
+    target: 6,
     historicalQuote: "Vườn không, nhà trống – đánh địch khắp nơi.",
     keyFigures: ["Các đại đội độc lập, du kích"],
     strategicImportance: "Cắt tiếp tế đường không cục bộ"
@@ -32,6 +34,7 @@ const historicalData = [
     significance: "Thu được kế hoạch tiến công, đòn giáng vào chỉ huy đối phương.",
     gameObjective: "Bắn rơi 1 AAC.1 Toucan (Ju-52) trong 3 lượt oanh tạc",
     difficulty: 3,
+    target: 7,
     historicalQuote: "Chiếc Ju-52 bị hạ, kế hoạch địch rơi vào tay ta.",
     keyFigures: ["Đại đội 675, Trung đoàn 74", "Đại tá Lambert"],
     strategicImportance: "Làm rối loạn hiệp đồng ba gọng kìm"
@@ -44,6 +47,7 @@ const historicalData = [
     significance: "Cường độ không vận lớn; mục tiêu là bảo vệ tuyến hậu cần địch.",
     gameObjective: "Bắn hạ 1 vận tải và làm hư hại 1 trinh sát",
     difficulty: 4,
+    target: 8,
     historicalQuote: "Cầu hàng không của địch sẽ bị cắt đứt.",
     keyFigures: ["Pierre Communal"],
     strategicImportance: "Bóp nghẹt tiếp tế đường không"
@@ -56,6 +60,7 @@ const historicalData = [
     significance: "Đối phương lệ thuộc nghiêm trọng vào máy bay vận tải.",
     gameObjective: "Chặn 3 gói tiếp tế rơi đúng khu địch",
     difficulty: 5,
+    target: 10,
     historicalQuote: "Địch thiếu đường bộ, phải dựa vào trời.",
     keyFigures: ["Không quân viễn chinh Pháp"],
     strategicImportance: "Buộc địch phân tán máy bay giữa nhiều mũi"
@@ -68,6 +73,7 @@ const historicalData = [
     significance: "Ép máy bay yểm trợ bay thấp – dễ trúng hỏa lực.",
     gameObjective: "Bắn rơi 1 chiến đấu cơ hộ tống (Spitfire) và 1 trinh sát",
     difficulty: 6,
+    target: 11,
     historicalQuote: "Thảm hoạ Đoan Hùng với cả đường sông lẫn bầu trời.",
     keyFigures: ["Trung đội pháo binh Xuân Canh"],
     strategicImportance: "Khóa chặt yểm trợ đường không cho đoàn tàu"
@@ -80,6 +86,7 @@ const historicalData = [
     significance: "Hạ trinh sát làm mù mắt đội hình đường bộ.",
     gameObjective: "Bắn hạ 1 máy bay trinh sát MS.500 Criquet",
     difficulty: 7,
+    target: 12,
     historicalQuote: "Đánh địch từ con mắt trên trời.",
     keyFigures: ["Tiểu đoàn 374"],
     strategicImportance: "Hỗ trợ phục kích mặt đất bằng ưu thế phòng không"
@@ -92,6 +99,7 @@ const historicalData = [
     significance: "Cơ hội đánh vào vận tải không khi rút lui.",
     gameObjective: "Bắn rơi 1 vận tải, buộc 1 chiếc quay đầu",
     difficulty: 8,
+    target: 14,
     historicalQuote: "Đường rút là thời cơ vàng.",
     keyFigures: ["Các đơn vị địa phương Bắc Kạn"],
     strategicImportance: "Làm đối phương rối loạn đội hình rút"
@@ -104,6 +112,7 @@ const historicalData = [
     significance: "Mật độ Spitfire/C-47/AAC.1 tăng mạnh vùng tứ giác.",
     gameObjective: "Bắn rơi 1 chiến đấu cơ, 1 vận tải trong 2 làn sóng",
     difficulty: 9,
+    target: 15,
     historicalQuote: "Vòng cung không kích không thể khép kín.",
     keyFigures: ["Raoul Salan"],
     strategicImportance: "Bẻ gãy ý đồ khóa vòng cung"
@@ -116,6 +125,7 @@ const historicalData = [
     significance: "Trận địa 12,7mm phát huy uy lực trong đêm.",
     gameObjective: "Hạ 2 mục tiêu bay thấp (1 trinh sát, 1 vận tải)",
     difficulty: 10,
+    target: 17,
     historicalQuote: "Đêm là đồng minh của pháo cao xạ.",
     keyFigures: ["Đơn vị phòng không địa phương"],
     strategicImportance: "Bảo vệ hành lang cơ động của ta"
@@ -128,6 +138,7 @@ const historicalData = [
     significance: "Hạ yểm trợ khiến đoàn mặt đất tổn thất nặng.",
     gameObjective: "Bắn rơi 1 chiến đấu cơ hộ tống",
     difficulty: 11,
+    target: 18,
     historicalQuote: "Đòn hiểm vào đoàn rút.",
     keyFigures: ["Trung đoàn 165"],
     strategicImportance: "Mở cửa phản kích đường bộ"
@@ -140,6 +151,7 @@ const historicalData = [
     significance: "Âm mưu “đánh nhanh thắng nhanh” phá sản.",
     gameObjective: "Đợt cuối: chặn 1 chuyến C-47/AAC.1 rải hàng rồi rút an toàn",
     difficulty: 12,
+    target: 20,
     historicalQuote: "Giữ được chủ lực qua mùa đông là thắng lợi.",
     keyFigures: ["Bộ Tổng chỉ huy Việt Minh"],
     strategicImportance: "Ấn định cục diện có lợi cho ta"

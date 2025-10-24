@@ -308,13 +308,12 @@ class GameEngine {
 
         this.currentLevel = levelId;
 
-        // Parse target kills from gameObjective with fallback
-        const killsMatch = levelData.gameObjective.match(/\d+/);
-        if (killsMatch) {
-            this.targetKills = parseInt(killsMatch[0]);
+        // Use target field from level data
+        if (levelData.target) {
+            this.targetKills = levelData.target;
         } else {
-            // Fallback for levels without explicit numbers
-            console.warn(`No kill target found in gameObjective for level ${levelId}, using default`);
+            // Fallback for levels without target field
+            console.warn(`No target field found for level ${levelId}, using default`);
             this.targetKills = 10; // Default target
         }
 
