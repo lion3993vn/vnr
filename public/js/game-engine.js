@@ -599,7 +599,7 @@ class GameEngine {
             height = 45; // B-52: Normal size
             burstCount = 5; // B-52: 5 bombs per burst
             burstDelay = 200; // B-52: 200ms between bombs in burst
-        } else if (randomType.type === 'C47_transport') {
+        } else if (randomType.type === 'C47_Skytrain') {
             // C-47: Transport aircraft with light bombing capability
             bombRate = 3000 + Math.random() * 1000; // C-47: Moderate bombing rate
             bombDamage = 5; // C-47: Low damage
@@ -898,7 +898,7 @@ class GameEngine {
         });
 
         // C-47 transport aircraft occasionally drop parachutists instead of bombs
-        if ((enemy.type === 'C47_transport' || enemy.type === 'C47_Skytrain') && Math.random() < 0.3) {
+        if (enemy.type === 'C47_Skytrain' && Math.random() < 0.3) {
             this.dropParachutist(enemy);
         }
 
