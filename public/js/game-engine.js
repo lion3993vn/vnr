@@ -1208,9 +1208,6 @@ class GameEngine {
                         <h3 class="text-xl font-bold text-yellow-400 mb-1 uppercase tracking-wider">
                             Hoàn thành chiến dịch 🏆
                         </h3>
-                        <p class="text-amber-200 text-lg font-medium">
-                            "Việt Bắc Thu Đông 1947!"
-                        </p>
                     </div>
                     ` : ''}
                 </div>
