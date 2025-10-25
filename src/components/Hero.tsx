@@ -21,31 +21,25 @@ const Hero: React.FC<HeroProps> = ({ scrollToSection }) => {
 
       {/* Content */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="mb-6">
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-600/20 text-yellow-400 backdrop-blur-sm border border-yellow-400/30">
-            <Calendar className="w-4 h-4 mr-2" />
-            Thu Đông 1947
-          </span>
-        </div>
 
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-          Chiến Dịch
-          <span className="text-yellow-400 block mt-2">Việt Bắc Thu Đông</span>
+          Lịch Sử Kháng Chiến
+          <span className="text-yellow-400 block mt-2">Chống Thực Dân Pháp</span>
         </h1>
 
         <p className="text-lg sm:text-xl text-gray-200 mb-8 max-w-2xl mx-auto leading-relaxed">
-          Một trong những chiến dịch quan trọng nhất trong lịch sử kháng chiến chống Pháp, 
-          mở đầu cho giai đoạn phản công chiến lược của quân dân ta.
+          Từ Cách mạng Tháng 8 đến các chiến dịch lớn - Hành trình đấu tranh 
+          giải phóng dân tộc anh hùng của nhân dân Việt Nam.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-12">
           <div className="flex items-center text-gray-300">
             <MapPin className="w-5 h-5 mr-2 text-yellow-400" />
-            <span>Khu vực Việt Bắc</span>
+            <span>Toàn lãnh thổ Việt Nam</span>
           </div>
           <div className="flex items-center text-gray-300">
             <Calendar className="w-5 h-5 mr-2 text-yellow-400" />
-            <span>7/10 - 22/12/1947</span>
+            <span>1945 - 1950</span>
           </div>
         </div>
 
@@ -58,10 +52,10 @@ const Hero: React.FC<HeroProps> = ({ scrollToSection }) => {
             <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
           </button>
           <button
-            onClick={() => scrollToSection('tong-quan')}
+            onClick={() => scrollToSection('tinh-hinh-sau-cm')}
             className="group inline-flex items-center px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
           >
-            Tổng quan chiến dịch
+            Khám phá lịch sử
             <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
           </button>
         </div>

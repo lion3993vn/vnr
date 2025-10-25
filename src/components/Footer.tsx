@@ -5,9 +5,9 @@ const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   const quickLinks = [
-    { label: 'Tổng quan chiến dịch', href: '#tong-quan' },
-    { label: 'Diễn biến lịch sử', href: '#dien-bien' },
-    { label: 'Ý nghĩa chiến dịch', href: '#y-nghia' },
+    { label: 'Sau Cách mạng 8/1945', href: '#sau-cach-mang-1945' },
+    { label: 'Chiến dịch Việt Bắc 1947', href: '#viet-bac-1947' },
+    { label: 'Chiến dịch Biên giới 1950', href: '#bien-gioi-1950' },
   ];
 
   const relatedLinks = [
@@ -35,17 +35,18 @@ const Footer: React.FC = () => {
                 <MapPin className="w-6 h-6 text-yellow-400" />
               </div>
               <div>
-                <h3 className="text-lg font-bold">Việt Bắc 1947</h3>
-                <p className="text-sm text-gray-400">Chiến dịch lịch sử</p>
+                <h3 className="text-lg font-bold">Lịch sử Kháng Chiến</h3>
+                <p className="text-sm text-gray-400">1945 - 1950</p>
               </div>
             </div>
             <p className="text-gray-300 text-sm leading-relaxed mb-6">
-              Trang web tưởng niệm và giới thiệu về chiến dịch Việt Bắc Thu Đông 1947 - 
-              một trong những dấu mốc quan trọng trong lịch sử kháng chiến chống Pháp.
+              Trang web giới thiệu về giai đoạn đầu cuộc kháng chiến chống thực dân Pháp 
+              (1945-1950), từ sau Cách mạng Tháng Tám đến chiến thắng Biên giới - 
+              những bước ngoặt quan trọng trong lịch sử dân tộc.
             </p>
             <div className="flex items-center space-x-2 text-yellow-400">
               <Calendar className="w-4 h-4" />
-              <span className="text-sm font-medium">7/10 - 22/12/1947</span>
+              <span className="text-sm font-medium">1945 - 1950</span>
             </div>
           </div>
 
@@ -106,7 +107,8 @@ const Footer: React.FC = () => {
             </ul>
             <div className="mt-6 p-4 bg-red-600/10 rounded-lg border border-red-600/20">
               <p className="text-xs text-gray-400 leading-relaxed">
-                Trang web được thiết kế nhằm mục đích giáo dục và tuyên truyền lịch sử. 
+                Trang web được thiết kế nhằm mục đích giáo dục, tuyên truyền lịch sử kháng chiến 
+                và giáo dục truyền thống yêu nước cho thế hệ trẻ. 
                 Mọi thông tin được sưu tầm từ các nguồn tài liệu chính thống.
               </p>
             </div>
@@ -119,10 +121,10 @@ const Footer: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-sm text-gray-400">
-              © {currentYear} Chiến Dịch Việt Bắc Thu Đông 1947. Mọi quyền được bảo lưu.
+              © {currentYear} Lịch Sử Kháng Chiến 1945-1950. Mọi quyền được bảo lưu.
             </div>
             <div className="flex items-center space-x-6 text-xs text-gray-500">
-              <span>Được thiết kế với ❤️ để tưởng nhớ các anh hùng liệt sĩ</span>
+              <span>Được thiết kế với ❤️ để tưởng nhớ các anh hùng liệt sĩ và thế hệ tiền nhân</span>
             </div>
           </div>
           <div className="mt-4 pt-4 border-t border-gray-800 text-center">
