@@ -1,82 +1,97 @@
-import React from 'react';
-import { Clock, MapPin, Users, Target } from 'lucide-react';
+import React from "react";
+import { Clock, MapPin, Users, Target } from "lucide-react";
 
 const TimelineSection: React.FC = () => {
-const timelineEvents = [
-  {
-    date: '7/10/1947',
-    title: 'Pháp mở màn Chiến dịch Việt Bắc',
-    description:
-      'Quân Pháp huy động 12.000 quân mở cuộc hành quân Léa, nhảy dù xuống Bắc Kạn nhằm bắt giữ Chính phủ Việt Minh và tiêu diệt cơ quan đầu não kháng chiến.',
-    icon: Target,
-    color: 'bg-red-500'
-  },
-  {
-    date: '9/10/1947',
-    title: 'Việt Minh bắn rơi máy bay chỉ huy Pháp',
-    description:
-      'Khẩu đội 12,7mm của Trung đoàn 74 bắn rơi máy bay vận tải Ju-52 chở sĩ quan tham mưu Pháp tại Cao Bằng, thu được kế hoạch tấn công Việt Bắc.',
-    icon: MapPin,
-    color: 'bg-yellow-500'
-  },
-  {
-    date: '13/10/1947',
-    title: 'Thành lập ba mặt trận chủ lực',
-    description:
-      'Bộ Tổng chỉ huy tổ chức ba mặt trận: Sông Lô – Đường 2, Bắc Kạn – Đường 3, và Đường 4, dưới sự chỉ đạo của các chỉ huy Trần Tử Bình, Hoàng Văn Thái, Võ Nguyên Giáp.',
-    icon: Users,
-    color: 'bg-green-500'
-  },
-  {
-    date: '24/10/1947',
-    title: 'Chiến thắng Sông Lô – Đoan Hùng',
-    description:
-      'Pháo binh Việt Minh phục kích trên sông Lô, đánh chìm hai tàu chiến Pháp, bắn hỏng hai chiếc khác. Báo chí Pháp gọi đây là “Thảm hoạ Đoan Hùng”.',
-    icon: Target,
-    color: 'bg-blue-500'
-  },
-  {
-    date: '29/10/1947',
-    title: 'Trận phục kích Bông Lau',
-    description:
-      'Tiểu đoàn 374 phục kích đoàn xe 30 chiếc của Pháp tại đèo Bông Lau, tiêu diệt 250 tên địch, thu nhiều vũ khí. Đơn vị được phong danh hiệu “Tiểu đoàn Bông Lau”.',
-    icon: MapPin,
-    color: 'bg-orange-500'
-  },
-  {
-    date: '13/11/1947',
-    title: 'Pháp rút khỏi Bắc Kạn – Chợ Đồn',
-    description:
-      'Trước sức tấn công của Việt Minh, quân Pháp buộc phải rút khỏi Chợ Đồn, Chợ Rã, Ngân Sơn. Kế hoạch Léa bị phá sản.',
-    icon: Users,
-    color: 'bg-purple-500'
-  },
-  {
-    date: '20/11/1947',
-    title: 'Pháp mở đợt tấn công Ceinture',
-    description:
-      'Mở cuộc hành quân vòng cung Ceinture càn quét vùng Tuyên Quang – Thái Nguyên – Việt Trì, nhưng tiếp tục bị Việt Minh phục kích và tiêu hao nặng.',
-    icon: Target,
-    color: 'bg-teal-500'
-  },
-  {
-    date: '15/12/1947',
-    title: 'Trận phục kích đèo Giàng',
-    description:
-      'Trung đoàn 165 phục kích tại đèo Giàng (Bắc Kạn), phá hủy 17 xe, diệt 60 lính Pháp, thu nhiều chiến lợi phẩm.',
-    icon: MapPin,
-    color: 'bg-pink-500'
-  },
-  {
-    date: '19/12/1947',
-    title: 'Chiến dịch kết thúc thắng lợi',
-    description:
-      'Quân Pháp buộc phải rút khỏi Việt Bắc. Chiến dịch Việt Bắc Thu – Đông 1947 kết thúc, đánh bại âm mưu “đánh nhanh thắng nhanh” của thực dân Pháp.',
-    icon: Clock,
-    color: 'bg-indigo-500'
-  }
-];
-
+  const timelineEvents = [
+    {
+      date: "7/10/1947",
+      title: "Pháp mở màn tiến công Việt Bắc (Léa)",
+      description:
+        "Hơn 10.000 quân Pháp hình thành hai gọng kìm đánh lên Việt Bắc, trọng điểm khu tam giác Bắc Kạn – Chợ Đồn – Chợ Mới.",
+      icon: Target,
+      color: "bg-red-500",
+    },
+    {
+      date: "9/10/1947",
+      title: "Bắn rơi máy bay chở kế hoạch của Pháp",
+      description:
+        "Máy bay Pháp bị ta bắn rơi tại Cao Bằng; đến 13/10 Bộ Tổng chỉ huy nhận được bản kế hoạch tiến công Việt Bắc của địch.",
+      icon: MapPin,
+      color: "bg-yellow-500",
+    },
+    {
+      date: "13/10/1947",
+      title: "Điều chỉnh phương án, lập 3 mặt trận",
+      description:
+        "Bộ Tổng chỉ huy điều chỉnh kế hoạch, phát động du kích rộng khắp và lập 3 mặt trận: Sông Lô – Đường 2, Bắc Kạn – Đường 3, và Đường 4.",
+      icon: Users,
+      color: "bg-green-500",
+    },
+    {
+      date: "21/10/1947",
+      title: "Trận Chợ Đồn",
+      description:
+        "Bộ đội ta đánh thắng ở khu vực Chợ Đồn, góp phần bẻ gãy gọng kìm của địch trên hướng Bắc Kạn – Đường 3.",
+      icon: Target,
+      color: "bg-blue-500",
+    },
+    {
+      date: "23/10/1947",
+      title: "Sông Lô – Đoan Hùng (đợt 1)",
+      description:
+        "Quân ta phục kích trên sông Lô – Đoan Hùng, đánh chìm, đánh hỏng nhiều tàu thuyền địch; chiến công phá vỡ mũi tiến công đường thủy.",
+      icon: Target,
+      color: "bg-indigo-500",
+    },
+    {
+      date: "30/10/1947",
+      title: "Phục kích Bông Lau",
+      description:
+        "Ta đánh thắng lớn ở đèo Bông Lau trên hướng Đường 4, tiêu diệt và làm thiệt hại nặng đoàn cơ giới của Pháp.",
+      icon: MapPin,
+      color: "bg-orange-500",
+    },
+    {
+      date: "10/11/1947",
+      title: "Sông Lô – Bình Ca (đợt 2)",
+      description:
+        "Tiếp tục đánh mạnh trên sông Lô, tiêu diệt thêm tàu thuyền và lực lượng địch, củng cố thế chủ động chiến dịch.",
+      icon: Target,
+      color: "bg-teal-500",
+    },
+    {
+      date: "21/11/1947",
+      title: "Pháp bắt đầu rút khỏi Việt Bắc",
+      description:
+        "Do thiệt hại lớn và bị đánh chặn nhiều hướng, quân Pháp bắt đầu bí mật rút quân khỏi Việt Bắc.",
+      icon: Users,
+      color: "bg-purple-500",
+    },
+    {
+      date: "30/11/1947",
+      title: "Tập kích đồn Phủ Thông",
+      description:
+        "Lực lượng ta tập kích Phủ Thông và liên tiếp phục kích ở Sơn Dương, Bình Ca, Đèo Khế, Phan Lương… trong quá trình địch rút lui.",
+      icon: MapPin,
+      color: "bg-pink-500",
+    },
+    {
+      date: "15/12/1947",
+      title: "Phục kích Đèo Giàng",
+      description:
+        "Trung đoàn 165 phục kích ở Đèo Giàng (Bắc Kạn), phá hủy nhiều xe cơ giới, diệt sinh lực, thu chiến lợi phẩm.",
+      icon: MapPin,
+      color: "bg-emerald-600",
+    },
+    {
+      date: "20/12/1947",
+      title: "Chiến dịch kết thúc thắng lợi",
+      description:
+        "Chiến dịch Việt Bắc Thu – Đông 1947 hoàn tất: ta loại khỏi vòng chiến đấu hơn 7.200 quân địch, bắn rơi 18 máy bay, đánh chìm 54 tàu xuồng; làm phá sản âm mưu “đánh nhanh, thắng nhanh”.",
+      icon: Clock,
+      color: "bg-purple-600",
+    },
+  ];
 
   return (
     <section id="dien-bien" className="py-16 lg:py-24 bg-gray-50">
@@ -86,8 +101,8 @@ const timelineEvents = [
             Diễn Biến Chiến Dịch
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Theo dõi từng bước tiến của chiến dịch qua timeline chi tiết với những sự kiện 
-            quan trọng và thành tựu đạt được.
+            Theo dõi từng bước tiến của chiến dịch qua timeline chi tiết với
+            những sự kiện quan trọng và thành tựu đạt được.
           </p>
         </div>
 
@@ -99,39 +114,60 @@ const timelineEvents = [
           {timelineEvents.map((event, index) => {
             const IconComponent = event.icon;
             const isEven = index % 2 === 0;
-            
+
             return (
-              <div key={index} className={`relative flex items-start mb-16 ${
-                index === timelineEvents.length - 1 ? 'mb-0' : ''
-              }`}>
+              <div
+                key={index}
+                className={`relative flex items-start mb-16 ${
+                  index === timelineEvents.length - 1 ? "mb-0" : ""
+                }`}
+              >
                 {/* Timeline dot với animation */}
-                <div className={`absolute left-4 md:left-1/2 transform md:-translate-x-1/2 w-5 h-5 ${event.color} rounded-full border-4 border-white shadow-xl z-10 animate-pulse`}></div>
-                
+                <div
+                  className={`absolute left-4 md:left-1/2 transform md:-translate-x-1/2 w-5 h-5 ${event.color} rounded-full border-4 border-white shadow-xl z-10 animate-pulse`}
+                ></div>
+
                 {/* Connecting line to card (chỉ hiển thị trên mobile) */}
                 <div className="absolute left-4 top-2.5 w-8 h-0.5 bg-gray-300 md:hidden"></div>
-                
+
                 {/* Content card */}
-                <div className={`flex-1 ml-16 md:ml-0 ${
-                  isEven ? 'md:pr-12 md:text-right' : 'md:pl-12 md:ml-auto'
-                } md:w-[calc(50%-2rem)]`}>
+                <div
+                  className={`flex-1 ml-16 md:ml-0 ${
+                    isEven ? "md:pr-12 md:text-right" : "md:pl-12 md:ml-auto"
+                  } md:w-[calc(50%-2rem)]`}
+                >
                   <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-gray-300 hover:-translate-y-1">
                     {/* Date badge */}
-                    <div className={`inline-block mb-3 px-3 py-1 rounded-full text-xs font-semibold ${event.color} bg-opacity-10`}>
-                      <span className={`${event.color.replace('bg-', 'text-')}`}>{event.date}</span>
+                    <div
+                      className={`inline-block mb-3 px-3 py-1 rounded-full text-xs font-semibold ${event.color} bg-opacity-10`}
+                    >
+                      <span
+                        className={`${event.color.replace("bg-", "text-")}`}
+                      >
+                        {event.date}
+                      </span>
                     </div>
-                    
-                    <div className={`flex items-start gap-4 mb-4 ${
-                      isEven ? 'md:flex-row-reverse md:text-right' : ''
-                    }`}>
-                      <div className={`w-12 h-12 ${event.color} rounded-xl flex items-center justify-center shadow-md flex-shrink-0 transform hover:scale-110 transition-transform duration-300`}>
+
+                    <div
+                      className={`flex items-start gap-4 mb-4 ${
+                        isEven ? "md:flex-row-reverse md:text-right" : ""
+                      }`}
+                    >
+                      <div
+                        className={`w-12 h-12 ${event.color} rounded-xl flex items-center justify-center shadow-md flex-shrink-0 transform hover:scale-110 transition-transform duration-300`}
+                      >
                         <IconComponent className="w-6 h-6 text-white" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">{event.title}</h3>
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">
+                          {event.title}
+                        </h3>
                       </div>
                     </div>
-                    
-                    <p className="text-gray-700 leading-relaxed text-sm">{event.description}</p>
+
+                    <p className="text-gray-700 leading-relaxed text-sm">
+                      {event.description}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -141,25 +177,41 @@ const timelineEvents = [
 
         {/* Thống kê kết quả */}
         <div className="mt-16 bg-white rounded-2xl p-8 lg:p-12 shadow-sm">
-          <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">Kết Quả Đạt Được</h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">
+            Kết Quả Đạt Được
+          </h3>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="text-center">
-              <div className="text-3xl font-bold text-red-600 mb-2">280+</div>
-              <p className="text-gray-600">Làng mạc giải phóng</p>
+              <div className="text-3xl font-bold text-red-600 mb-2">7,200+</div>
+              <p className="text-gray-600">Địch bị loại khỏi vòng chiến đấu</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-yellow-600 mb-2">3,000+</div>
-              <p className="text-gray-600">Địch quân tiêu diệt</p>
+              <div className="text-3xl font-bold text-yellow-600 mb-2">18</div>
+              <p className="text-gray-600">Máy bay bị bắn rơi/hư hại</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-green-600 mb-2">1,500+</div>
-              <p className="text-gray-600">Vũ khí thu được</p>
+              <div className="text-3xl font-bold text-green-600 mb-2">54</div>
+              <p className="text-gray-600">Tàu thuyền bị đánh chìm</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">50+</div>
-              <p className="text-gray-600">Đồn bốt phá hủy</p>
+              <div className="text-3xl font-bold text-blue-600 mb-2">255+</div>
+              <p className="text-gray-600">Xe cơ giới bị phá hủy</p>
             </div>
           </div>
+
+          {/*<div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-emerald-600 mb-2">
+                2,000+
+              </div>
+              <p className="text-gray-600">Vũ khí & trang bị thu được</p>
+            </div>
+            {/* Nếu vẫn muốn có “đồn bốt” hoặc “làng mạc”, nên ghi “không có số liệu chính thức” */}
+            {/* <div className="text-center">
+      <div className="text-3xl font-bold text-gray-600 mb-2">—</div>
+      <p className="text-gray-600">Đồn bốt phá hủy (không có số liệu chính thức)</p>
+    </div>
+          </div>*/}
         </div>
       </div>
     </section>
