@@ -6,6 +6,7 @@ import BorderCampaignSection from './components/BorderCampaignSection';
 import OverviewSection from './components/OverviewSection';
 import TimelineSection from './components/TimelineSection';
 import SignificanceSection from './components/SignificanceSection';
+import ConnectionSection from './components/ConnectionSection';
 import Footer from './components/Footer';
 
 function App() {
@@ -81,9 +82,8 @@ function App() {
         {/* Border Campaign Section */}
         <BorderCampaignSection />
 
-
-
-
+        {/* Connection Section - Tổng kết liên kết */}
+        <ConnectionSection />
       </main>
 
       {/* Footer */}

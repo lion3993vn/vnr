@@ -65,6 +65,26 @@ Trang web hiện bao gồm 3 phần nội dung chính về lịch sử kháng ch
 
 **Trạng thái**: ĐÃ CÓ NỘI DUNG ĐẦY ĐỦ
 
+## 4. Section Kết Nối (Tổng Kết)
+**Component**: `ConnectionSection.tsx`
+**Vị trí**: Ngay trước Footer
+
+**Mục đích**: Thể hiện sự liên kết và phát triển logic giữa 3 giai đoạn lịch sử
+
+**Cấu trúc:**
+- Timeline ngang với 3 mốc thời gian:
+  - 1945: Cách mạng Tháng 8 (Giành độc lập)
+  - 1947: Việt Bắc Thu Đông (Bảo vệ độc lập)
+  - 1950: Biên giới Thu Đông (Phản công thắng lợi)
+- Phần "Sự Liên Kết Chiến Lược" với 3 điểm chính:
+  - Từ giành chính quyền → giữ vững chính quyền
+  - Từ phòng thủ → phản công chiến lược
+  - Từ yếu thế → chủ động chiến trường
+- Quote của Chủ tịch Hồ Chí Minh
+- Thông điệp kết: Về sự liên kết tạo nên thắng lợi
+
+**Màu sắc**: Gradient đỏ - vàng, thể hiện sự chuyển biến tích cực
+
 ## Navigation
 Header được cập nhật với 5 mục menu:
 1. "Sau CM Tháng 8" → `tinh-hinh-sau-cm`
