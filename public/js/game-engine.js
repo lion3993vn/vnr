@@ -1613,7 +1613,7 @@ class GameEngine {
             let aircraftImage = this.images.aircraft; // Default to aircraft.png for B-52
             if (enemy.type === 'F4C_phantom' && this.images.f4c) {
                 aircraftImage = this.images.f4c; // Use F-4C specific image
-            } else if (enemy.type === 'C47_transport' && this.images.c47) {
+            } else if (enemy.type === 'C47_Skytrain' && this.images.c47) {
                 aircraftImage = this.images.c47; // Use C-47 specific image
             }
 
@@ -1630,7 +1630,7 @@ class GameEngine {
                     // F-4C uses different proportions - more compact
                     widthMultiplier = 2.2;
                     heightMultiplier = 4;
-                } else if (enemy.type === 'C47_transport') {
+                } else if (enemy.type === 'C47_Skytrain') {
                     // C-47 uses medium proportions - transport aircraft
                     widthMultiplier = 2;
                     heightMultiplier = 3.5;
