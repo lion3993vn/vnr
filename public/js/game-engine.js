@@ -898,26 +898,36 @@ class GameEngine {
         });
 
         // C-47 transport aircraft occasionally drop parachutists instead of bombs
-        if (enemy.type === 'C47_Skytrain' && Math.random() < 0.3) {
-            this.dropParachutist(enemy);
+        // Increased probability (60%) and drop multiple parachutists (2-5)
+        if (enemy.type === 'C47_Skytrain' && Math.random() < 0.6) {
+            const parachuteCount = Math.floor(Math.random() * 4) + 2; // Random 2-5 parachutists
+            for (let i = 0; i < parachuteCount; i++) {
+                // Spread them out horizontally with slight delay effect
+                setTimeout(() => {
+                    this.dropParachutist(enemy, i);
+                }, i * 100); // 100ms delay between each drop
+            }
         }
 
         // Play bomb falling sound
         this.playSound('bombFall');
     }
 
-    dropParachutist(enemy) {
+    dropParachutist(enemy, index = 0) {
         // Drop a parachutist from C-47 transport aircraft
+        // Spread parachutists horizontally based on index
+        const spreadOffset = (index - 2) * 15; // Center around aircraft
+        
         this.parachutists.push({
-            x: enemy.x + enemy.width / 2 - 20,
+            x: enemy.x + enemy.width / 2 - 30 + spreadOffset,
             y: enemy.y + enemy.height,
-            width: 40,
-            height: 60,
-            vx: enemy.vx * 0.3, // Slight horizontal momentum
+            width: 60,
+            height: 90,
+            vx: enemy.vx * 0.3 + (Math.random() - 0.5) * 0.5, // Slight horizontal momentum with variation
             vy: 0.8, // Slow falling speed (parachute effect)
             health: 1, // Can be shot down
-            damage: 40, // High damage if reaches ground
-            sway: 0 // For swaying animation
+            damage: 10, // High damage if reaches ground
+            sway: Math.random() * Math.PI * 2 // Random initial sway phase
         });
     }
 
