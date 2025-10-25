@@ -1099,7 +1099,8 @@ class GameEngine {
                     this.createHitEffect(para.x + para.width / 2, para.y + para.height / 2);
 
                     if (para.health <= 0) {
-                        // Parachutist destroyed
+                        // Parachutist destroyed - BUT DON'T COUNT AS KILL
+                        // Only enemy aircraft count towards kill objective
                         this.createExplosion(para.x + para.width / 2, para.y + para.height / 2);
                         this.parachutists.splice(paraIndex, 1);
                         this.playSound('explosion');
