@@ -11,7 +11,7 @@ const Header: React.FC<HeaderProps> = ({ activeSection, scrollToSection }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const navigationItems = [
-    { id: 'tinh-hinh-sau-cm', label: 'Sau CM Tháng 8 năm 1945' },
+    { id: 'tinh-hinh-sau-cm', label: 'Sau cách mạng Tháng 8 năm 1945' },
     { id: 'tong-quan', label: 'Việt Bắc 1947' },
     { id: 'chien-dich-bien-gioi', label: 'Biên giới Thu - Đông 1950' },
     // { id: 'dien-bien', label: 'Diễn biến' },
