@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
+import PostRevolutionSection from './components/PostRevolutionSection';
+import BorderCampaignSection from './components/BorderCampaignSection';
 import OverviewSection from './components/OverviewSection';
 import TimelineSection from './components/TimelineSection';
 import SignificanceSection from './components/SignificanceSection';
@@ -28,7 +30,7 @@ function App() {
   // Track active section on scroll
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['tong-quan', 'dien-bien', 'y-nghia', 'hinh-anh'];
+      const sections = ['tinh-hinh-sau-cm', 'chien-dich-bien-gioi', 'tong-quan', 'dien-bien', 'y-nghia'];
       const scrollPosition = window.scrollY + 100;
 
       // Show/hide back to top button
@@ -54,7 +56,7 @@ function App() {
 
   // Update document title
   useEffect(() => {
-    document.title = 'Chiến Dịch Việt Bắc Thu Đông 1947 - Trang Lịch Sử';
+    document.title = 'Lịch Sử Kháng Chiến Việt Nam - Trang Lịch Sử';
   }, []);
 
   return (
@@ -67,14 +69,21 @@ function App() {
         {/* Hero Section */}
         <Hero scrollToSection={scrollToSection} />
 
-        {/* Overview Section */}
-        <OverviewSection />
+        {/* Post Revolution Section */}
+        <PostRevolutionSection />
 
+        {/* Overview Section - Việt Bắc 1947 */}
+        <OverviewSection />
         {/* Timeline Section */}
         <TimelineSection />
-
         {/* Significance Section */}
         <SignificanceSection />
+        {/* Border Campaign Section */}
+        <BorderCampaignSection />
+
+
+
+
       </main>
 
       {/* Footer */}
@@ -87,19 +96,19 @@ function App() {
           className="fixed bottom-6 right-6 w-12 h-12 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center z-40 group"
           aria-label="Về đầu trang"
         >
-        <svg
-          className="w-6 h-6 group-hover:-translate-y-1 transition-transform duration-300"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M5 10l7-7m0 0l7 7m-7-7v18"
-          />
-        </svg>
+          <svg
+            className="w-6 h-6 group-hover:-translate-y-1 transition-transform duration-300"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 10l7-7m0 0l7 7m-7-7v18"
+            />
+          </svg>
         </button>
       )}
     </div>

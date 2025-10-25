@@ -11,9 +11,11 @@ const Header: React.FC<HeaderProps> = ({ activeSection, scrollToSection }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const navigationItems = [
-    { id: 'tong-quan', label: 'Tổng quan' },
-    { id: 'dien-bien', label: 'Diễn biến' },
-    { id: 'y-nghia', label: 'Ý nghĩa' },
+    { id: 'tinh-hinh-sau-cm', label: 'Sau CM Tháng 8 năm 1945' },
+    { id: 'tong-quan', label: 'Việt Bắc 1947' },
+    { id: 'chien-dich-bien-gioi', label: 'Biên giới Thu - Đông 1950' },
+    // { id: 'dien-bien', label: 'Diễn biến' },
+    // { id: 'y-nghia', label: 'Ý nghĩa' },
   ];
 
   useEffect(() => {
@@ -47,19 +49,19 @@ const Header: React.FC<HeaderProps> = ({ activeSection, scrollToSection }) => {
               <h1 className={`text-lg font-bold transition-colors duration-300 ${
                 isScrolled ? 'text-red-600' : 'text-white'
               }`}>
-                Chiến Dịch Việt Bắc Thu Đông
+                Lịch Sử Kháng Chiến
               </h1>
               <p className={`text-sm transition-colors duration-300 ${
                 isScrolled ? 'text-gray-600' : 'text-yellow-200'
               }`}>
-                1947
+                Việt Nam
               </p>
             </div>
             <div className="sm:hidden">
               <span className={`text-sm font-bold transition-colors duration-300 ${
                 isScrolled ? 'text-red-600' : 'text-white'
               }`}>
-                Việt Bắc 1947
+                Kháng Chiến VN
               </span>
             </div>
           </div>
