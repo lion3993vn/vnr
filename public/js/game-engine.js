@@ -30,6 +30,7 @@ class GameEngine {
         this.particles = [];
         this.explosions = [];
         this.powerUps = [];
+        this.parachutists = [];
 
         // Power-up effects
         this.activePowerUps = {
@@ -147,7 +148,8 @@ class GameEngine {
             { name: 'f4c', src: 'assets/images/F-4C.png' },
             { name: 'c47', src: 'assets/images/C-47.png' },
             { name: 'gunBarrel', src: 'assets/images/gun-barrel.png' },
-            { name: 'gunBody', src: 'assets/images/gun-body.png' }
+            { name: 'gunBody', src: 'assets/images/gun-body.png' },
+            { name: 'parachutist', src: 'assets/images/parachutist.png' }
         ];
 
         const imagePromises = imageList.map(item => {
@@ -320,6 +322,7 @@ class GameEngine {
         this.particles = [];
         this.explosions = [];
         this.powerUps = [];
+        this.parachutists = [];
 
         // Reset power-ups
         this.activePowerUps = {
@@ -373,6 +376,7 @@ class GameEngine {
         this.particles = [];
         this.explosions = [];
         this.powerUps = []; // Clear any remaining power-ups
+        this.parachutists = []; // Clear any remaining parachutists
 
         // Update UI
         document.getElementById('levelTitle').textContent = `Ngày ${levelId}: ${levelData.title}`;
@@ -453,6 +457,7 @@ class GameEngine {
         this.particles = [];
         this.explosions = [];
         this.powerUps = [];
+        this.parachutists = [];
 
         // Reset power-ups
         this.activePowerUps = {
@@ -507,6 +512,7 @@ class GameEngine {
         this.updateParticles(deltaTime);
         this.updateExplosions(deltaTime);
         this.updatePowerUps(deltaTime);
+        this.updateParachutists(deltaTime);
 
         // Check collisions
         this.checkCollisions();
@@ -593,7 +599,7 @@ class GameEngine {
             height = 45; // B-52: Normal size
             burstCount = 5; // B-52: 5 bombs per burst
             burstDelay = 200; // B-52: 200ms between bombs in burst
-        } else if (randomType.type === 'C47_transport') {
+        } else if (randomType.type === 'C47_Skytrain') {
             // C-47: Transport aircraft with light bombing capability
             bombRate = 3000 + Math.random() * 1000; // C-47: Moderate bombing rate
             bombDamage = 5; // C-47: Low damage
@@ -891,8 +897,69 @@ class GameEngine {
             gravity: 0.15 // Gravity acceleration for realistic physics
         });
 
+        // C-47 transport aircraft occasionally drop parachutists instead of bombs
+        // Increased probability (60%) and drop multiple parachutists (2-5)
+        if (enemy.type === 'C47_Skytrain' && Math.random() < 0.6) {
+            const parachuteCount = Math.floor(Math.random() * 4) + 2; // Random 2-5 parachutists
+            for (let i = 0; i < parachuteCount; i++) {
+                // Spread them out horizontally with slight delay effect
+                setTimeout(() => {
+                    this.dropParachutist(enemy, i);
+                }, i * 100); // 100ms delay between each drop
+            }
+        }
+
         // Play bomb falling sound
         this.playSound('bombFall');
+    }
+
+    dropParachutist(enemy, index = 0) {
+        // Drop a parachutist from C-47 transport aircraft
+        // Spread parachutists horizontally based on index
+        const spreadOffset = (index - 2) * 15; // Center around aircraft
+        
+        this.parachutists.push({
+            x: enemy.x + enemy.width / 2 - 30 + spreadOffset,
+            y: enemy.y + enemy.height,
+            width: 60,
+            height: 90,
+            vx: enemy.vx * 0.3 + (Math.random() - 0.5) * 0.5, // Slight horizontal momentum with variation
+            vy: 0.8, // Slow falling speed (parachute effect)
+            health: 1, // Can be shot down
+            damage: 10, // High damage if reaches ground
+            sway: Math.random() * Math.PI * 2 // Random initial sway phase
+        });
+    }
+
+    updateParachutists(deltaTime) {
+        this.parachutists.forEach((para, index) => {
+            // Update position
+            para.x += para.vx;
+            para.y += para.vy;
+            
+            // Add swaying motion for realism
+            para.sway += deltaTime * 0.003;
+            para.x += Math.sin(para.sway) * 0.5;
+
+            // Check if parachutist hits ground
+            if (para.y >= this.height - 20) {
+                // Damage defense when parachutist lands
+                this.defenseHealth -= para.damage;
+                this.createExplosion(para.x + para.width / 2, this.height - 20);
+                this.playSound('explosion');
+                this.parachutists.splice(index, 1);
+
+                // Check if defense is destroyed
+                if (this.defenseHealth <= 0) {
+                    this.defenseHealth = 0;
+                }
+            }
+
+            // Remove if off-screen horizontally
+            if (para.x < -100 || para.x > this.width + 100) {
+                this.parachutists.splice(index, 1);
+            }
+        });
     }
 
     dropPowerUp(x, y) {
@@ -1010,6 +1077,33 @@ class GameEngine {
 
                         this.enemies.splice(enemyIndex, 1);
                         this.playSound('planeExplosion'); // Use plane explosion sound
+                    }
+                }
+            });
+        });
+
+        // Bullet vs Parachutist collisions
+        this.bullets.forEach((bullet, bulletIndex) => {
+            if (!bullet.friendly) return;
+
+            this.parachutists.forEach((para, paraIndex) => {
+                if (this.checkCollision(bullet, para)) {
+                    // Destroy parachutist
+                    para.health -= bullet.damage;
+                    this.bullets.splice(bulletIndex, 1);
+
+                    // Play bullet hit sound
+                    this.playSound('bulletHit');
+
+                    // Create hit effect
+                    this.createHitEffect(para.x + para.width / 2, para.y + para.height / 2);
+
+                    if (para.health <= 0) {
+                        // Parachutist destroyed (không cộng kill vì chỉ tính kill cho máy bay)
+                        this.createExplosion(para.x + para.width / 2, para.y + para.height / 2);
+                        this.parachutists.splice(paraIndex, 1);
+                        this.playSound('explosion');
+                        // Note: Không tăng this.currentKills vì parachutist không phải là mục tiêu chính
                     }
                 }
             });
@@ -1369,6 +1463,7 @@ class GameEngine {
         this.drawEnemies();
         this.drawBullets();
         this.drawBombs();
+        this.drawParachutists();
         this.drawParticles();
         this.drawExplosions();
         this.drawPowerUps();
@@ -1529,7 +1624,7 @@ class GameEngine {
             let aircraftImage = this.images.aircraft; // Default to aircraft.png for B-52
             if (enemy.type === 'F4C_phantom' && this.images.f4c) {
                 aircraftImage = this.images.f4c; // Use F-4C specific image
-            } else if (enemy.type === 'C47_transport' && this.images.c47) {
+            } else if (enemy.type === 'C47_Skytrain' && this.images.c47) {
                 aircraftImage = this.images.c47; // Use C-47 specific image
             }
 
@@ -1546,7 +1641,7 @@ class GameEngine {
                     // F-4C uses different proportions - more compact
                     widthMultiplier = 2.2;
                     heightMultiplier = 4;
-                } else if (enemy.type === 'C47_transport') {
+                } else if (enemy.type === 'C47_Skytrain') {
                     // C-47 uses medium proportions - transport aircraft
                     widthMultiplier = 2;
                     heightMultiplier = 3.5;
@@ -1802,6 +1897,77 @@ class GameEngine {
             this.ctx.globalAlpha = particle.life / particle.maxLife;
             this.ctx.fillStyle = particle.color;
             this.ctx.fillRect(particle.x - 2, particle.y - 2, 4, 4);
+            this.ctx.restore();
+        });
+    }
+
+    drawParachutists() {
+        this.parachutists.forEach(para => {
+            this.ctx.save();
+
+            // Use custom parachutist image if available
+            if (this.images.parachutist && this.images.parachutist instanceof HTMLImageElement) {
+                // Draw parachutist with image
+                this.ctx.drawImage(
+                    this.images.parachutist,
+                    para.x,
+                    para.y,
+                    para.width,
+                    para.height
+                );
+            } else {
+                // Fallback: Draw simple parachutist representation
+                
+                // Parachute canopy
+                this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                this.ctx.strokeStyle = '#000000';
+                this.ctx.lineWidth = 1;
+                this.ctx.beginPath();
+                this.ctx.arc(para.x + para.width / 2, para.y + 10, 15, Math.PI, 0, false);
+                this.ctx.fill();
+                this.ctx.stroke();
+
+                // Parachute lines
+                this.ctx.strokeStyle = '#333333';
+                this.ctx.lineWidth = 1;
+                for (let i = 0; i < 5; i++) {
+                    const startX = para.x + para.width / 2 - 15 + (i * 7.5);
+                    const startY = para.y + 10;
+                    const endX = para.x + para.width / 2;
+                    const endY = para.y + 35;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(startX, startY);
+                    this.ctx.lineTo(endX, endY);
+                    this.ctx.stroke();
+                }
+
+                // Person body (simple stick figure)
+                this.ctx.fillStyle = '#8B4513';
+                this.ctx.fillRect(para.x + para.width / 2 - 3, para.y + 35, 6, 15); // Body
+                
+                // Head
+                this.ctx.fillStyle = '#FFD7A8';
+                this.ctx.beginPath();
+                this.ctx.arc(para.x + para.width / 2, para.y + 30, 5, 0, Math.PI * 2);
+                this.ctx.fill();
+
+                // Arms
+                this.ctx.strokeStyle = '#8B4513';
+                this.ctx.lineWidth = 2;
+                this.ctx.beginPath();
+                this.ctx.moveTo(para.x + para.width / 2 - 6, para.y + 40);
+                this.ctx.lineTo(para.x + para.width / 2 + 6, para.y + 40);
+                this.ctx.stroke();
+
+                // Legs
+                this.ctx.beginPath();
+                this.ctx.moveTo(para.x + para.width / 2, para.y + 50);
+                this.ctx.lineTo(para.x + para.width / 2 - 4, para.y + 60);
+                this.ctx.moveTo(para.x + para.width / 2, para.y + 50);
+                this.ctx.lineTo(para.x + para.width / 2 + 4, para.y + 60);
+                this.ctx.stroke();
+            }
+
             this.ctx.restore();
         });
     }
